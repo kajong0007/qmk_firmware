@@ -72,23 +72,23 @@ static bool jack_test_effect_run(effect_params_t* params) {
             switch(row) {
                 case 56:
                     row = 0;
-                    rgb_matrix_set_color(i, 0xff, 0, 0);
+                    rgb_matrix_set_color(i, 0xff, 0xf4, 0x30);
                     break;
                 case 44:
                     row = 1;
-                    rgb_matrix_set_color(i, 0, 0xff, 0);
+                    rgb_matrix_set_color(i, 0xff, 0xff, 0xff);
                     break;
                 case 32:
                     row = 2;
-                    rgb_matrix_set_color(i, 0, 0, 0xff);
+                    rgb_matrix_set_color(i, 0x9c, 0x59, 0xd1);
                     break;
                 case 19:
                     row = 3;
-                    rgb_matrix_set_color(i, 0xff, 0, 0xff);
+                    rgb_matrix_set_color(i, 0x20, 0x20, 0x20);
                     break;
                 case 7:
                     row = 4;
-                    rgb_matrix_set_color(i, 0, 0xff, 0xff);
+                    rgb_matrix_set_color(i, 0xef, 0xff, 0xff);
                     break;
             }
         }
