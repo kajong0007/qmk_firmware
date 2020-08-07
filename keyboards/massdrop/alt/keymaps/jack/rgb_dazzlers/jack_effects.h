@@ -1,14 +1,16 @@
 RGB_MATRIX_EFFECT(jack_casey_simple_sine)
 
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
-
+	//ratio = 4
+	//val += 40;
+	//val = val * 6.375;
 uint8_t do_math(uint8_t x, uint8_t y, uint8_t t) {
-	float fx = x/5;
+	float fx = x/5 + 1.15;
 	float fy = (y-1)/5;
-	float ratio = 4;
+	float ratio = 2;
 	float val = fx * ((float)sin8(t)/255.0f) + ratio * fy * ((float)cos8(t)/255.0f);
-	val += 40;
-	val = val * 6.375;
+	val += 28.84;
+	val = val * 8.84;
 	return (uint8_t)val;
 }
 
