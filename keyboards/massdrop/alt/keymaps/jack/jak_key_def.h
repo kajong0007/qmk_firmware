@@ -1,4 +1,7 @@
 JAK_KEY_DEF(JAK_HEARTS, "💖", "💛🤍💜🖤")
-JAK_KEY_DEF(OWO_EYEBROW_RAISE, "ŌwÔ", "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧")
+JAK_KEY_DEF(OWO_EYERAISE, "ŌwÔ", "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧")
 JAK_KEY_DEF(OWO_ANGERY, "ÒwÓ", "(ง'̀-'́)ง")
 JAK_KEY_DEF(UWU_SAD, "ÚwÙ", "ᕕ(ᐛ)ᕗ")
+JAK_KEY_DEF(SNEK_WOLF, "🐍", "🐺")
+JAK_KEY_DEF(RACC_FOX, "🦝", "🦊")
+JAK_KEY_DEF(TABL_FL, "(╯°□°）╯︵ ┻━┻", "┬─┬ノ(°_°ノ)")

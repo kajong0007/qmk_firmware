@@ -2,20 +2,6 @@
 
 uint16_t rand16seed = 1337;
 
-enum unicode_names {
-    SNEK,
-    RACCOON,
-    FOX,
-    WOLF,
-};
-
-const uint32_t PROGMEM unicode_map[] = {
-    [SNEK] = 0x1F40D,
-    [RACCOON] = 0x1F99D,
-    [FOX] = 0x1F98A,
-    [WOLF] = 0x1F43A,
-};
-
 enum alt_keycodes {
     U_T_AUTO = SAFE_RANGE, //USB Extra Port Toggle Auto Detect / Always Active
     U_T_AGCR,              //USB Toggle Automatic GCR control
@@ -25,7 +11,10 @@ enum alt_keycodes {
     DBG_MOU,               //DEBUG Toggle Mouse Prints
     MD_BOOT,               //Restart into bootloader after hold timeout
 
-    //jack's
+    // jack's
+    JAK_AUTO_W,
+
+    // jack's auto key stuff for unicode typing
 #define JAK_KEY_DEF(name, unshift, shift) name,
 #include "jak_key_def.h"
 #undef JAK_KEY_DEF
@@ -33,25 +22,29 @@ enum alt_keycodes {
 
 keymap_config_t keymap_config;
 
+//static bool jak_auto_w_state;
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_65_ansi_blocker(
         KC_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_DEL,  \
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
         KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN, \
-        KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, TT(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
+        KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
     ),
     [1] = LAYOUT_65_ansi_blocker(
-        KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
-        _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
-        _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______,  JAK_HEARTS, OWO_EYEBROW_RAISE,
-                                                                                                  OWO_ANGERY,
-                                                                                                           UWU_SAD,          _______, KC_VOLU, \
-\
-        _______, RGB_TOG, _______, _______, _______, MD_BOOT, NK_TOGG, DBG_TOG, _______, XP(RACCOON, FOX), \
-                                                                                                  XP(WOLF, SNEK), \
-                                                                                                           _______,          KC_PGUP, KC_VOLD, \
-        _______, _______, _______,                            _______,                            _______, TO(0), KC_HOME, KC_PGDN, KC_END  \
+        KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,     KC_F8,      KC_F9,         KC_F10,     KC_F11,  KC_F12,  XXXXXXX, KC_MUTE, \
+        XXXXXXX, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, XXXXXXX, U_T_AUTO,  U_T_AGCR,   XXXXXXX,       KC_PSCR,    KC_SLCK, KC_PAUS, XXXXXXX, KC_END, \
+        XXXXXXX, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, XXXXXXX, XXXXXXX,   JAK_HEARTS, OWO_EYERAISE,  OWO_ANGERY, UWU_SAD, TABL_FL,          KC_VOLU, \
+        KC_LSFT, RGB_TOG, XXXXXXX, XXXXXXX, XXXXXXX, MD_BOOT, NK_TOGG, DBG_TOG,   XXXXXXX,    RACC_FOX,      SNEK_WOLF,  KC_RSFT,          KC_PGUP, KC_VOLD, \
+        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                        MO(2),         _______,    KC_HOME, KC_PGDN, KC_END  \
+    ),
+    [2] = LAYOUT(
+        XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, JAK_AUTO_W, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+        XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX, KC_BRIU, \
+        KC_LSFT, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,          XXXXXXX, KC_BRID, \
+        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX  \
     ),
     /*
     [X] = LAYOUT(
@@ -158,8 +151,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         /*
          * more stuff to add
          * (・ω・)
-         * (╯°□°）╯︵ ┻━┻
          */
+        case JAK_AUTO_W:
+            if (record->event.pressed && !MODS_SHIFT) {
+                // auto walk
+                send_string(SS_DOWN(X_W));
+            } else if (record->event.pressed && MODS_SHIFT) {
+                // auto sprint...? (double tap and hold w)
+                send_string(SS_UP(X_LSFT) SS_UP(X_RSFT) SS_TAP(X_W) SS_DELAY(50) SS_DOWN(X_W));
+            }
+            return false;
+            break;
         default:
             return true; //Process all other keycodes normally
     }

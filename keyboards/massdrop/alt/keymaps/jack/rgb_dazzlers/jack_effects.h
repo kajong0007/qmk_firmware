@@ -1,6 +1,7 @@
 RGB_MATRIX_EFFECT(jack_casey_simple_sine)
 RGB_MATRIX_EFFECT(jack_simple_atan)
 RGB_MATRIX_EFFECT(jack_row_stripes)
+RGB_MATRIX_EFFECT(jack_pride_stripes)
 
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
@@ -22,8 +23,8 @@ typedef struct {
 typedef struct {
     uint8_t row_idx;
     uint8_t cur_delay;
-    uint8_t offset;
-    uint8_t prev_offset;
+    HSV offset;
+    HSV prev_offset;
 } row_stripe_t;
 
 static row_bound_t jak_row_bounds[6] = {
@@ -36,20 +37,20 @@ static row_bound_t jak_row_bounds[6] = {
 };
 
 static row_stripe_t jak_row_stripes[6] = {
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0}
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
+    {0, 0, {0, 0, 0}, {0, 0, 0}},
 };
 
 static uint8_t led_delays[DRIVER_LED_TOTAL] = {
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1,
     2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1,
-    4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1,
-    1, 1, 1, 9, 1, 2, 1, 1, 1,
+    2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1,
+    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1,
+    1, 1, 3, 4, 1, 2, 1, 1, 1,
     // underglow
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -124,11 +125,55 @@ static uint8_t led_idx_to_row_idx(uint8_t led_idx) {
 }
 
 static uint8_t stripe_get_delay(uint8_t idx) {
-    uint8_t speed = 0x80 / (rgb_matrix_config.speed == 0 ? 1 : rgb_matrix_config.speed);
-    if (speed == 0) {
-        speed = 1;
-    }
+    uint8_t speed = (~(rgb_matrix_config.speed / 8)) & 0x07;
+    speed += 6;
     return led_delays[idx] * speed;
+}
+
+static HSV stripe_get_random(void) {
+    HSV new_offset;
+    new_offset.h = random8_max(254) + 1;
+    new_offset.s = 0xff;
+    new_offset.v = 0xff;
+    return new_offset;
+}
+
+static HSV nb_flag[] = {
+    // yellow
+    {0x35, 0xff, 0xff},
+    // white (color corrected)
+    {0x90, 0x20, 0xff},
+    // purple
+    {0xc0, 0xff, 0xff},
+    // black (but still lit for ease of seeing)
+    {0xaa, 0x20, 0x50},
+};
+
+static HSV stripe_get_pride_nb_flag(uint8_t row_idx, uint8_t idx_in_row, uint8_t time) {
+    uint8_t pride_idx = (((time / 2) % 4) + idx_in_row + row_idx) % 4;
+    return nb_flag[pride_idx];
+}
+
+static bool jack_pride_stripes(effect_params_t* params) {
+    RGB_MATRIX_USE_LIMITS(led_min, led_max);
+    for (uint8_t i = led_min; i < led_max; i++) {
+        RGB_MATRIX_TEST_LED_FLAGS();
+
+        uint8_t row_idx = led_idx_to_row_idx(i);
+        uint8_t idx_in_row = i - jak_row_bounds[row_idx].min_idx;
+        uint8_t time = scale16by8(g_rgb_timer, rgb_matrix_config.speed / 8);
+        HSV pride_hsv = stripe_get_pride_nb_flag(row_idx, idx_in_row, time);
+
+        HSV config_hsv = rgb_matrix_config.hsv;
+
+        pride_hsv.s = pride_hsv.s < config_hsv.s ? pride_hsv.s : config_hsv.s;
+        pride_hsv.v = pride_hsv.v < config_hsv.v ? pride_hsv.v : config_hsv.v;
+
+        RGB cur_r = hsv_to_rgb(pride_hsv);
+
+        rgb_matrix_set_color(i, cur_r.r, cur_r.g, cur_r.b);
+    }
+    return led_max < DRIVER_LED_TOTAL;
 }
 
 static bool jack_row_stripes(effect_params_t* params) {
@@ -144,7 +189,7 @@ static bool jack_row_stripes(effect_params_t* params) {
             row_stripe_t* rando_stripe = &(jak_row_stripes[i]);
             rando_stripe->row_idx = jak_row_bounds[i].min_idx;
             rando_stripe->cur_delay = stripe_get_delay(rando_stripe->row_idx);
-            rando_stripe->offset = random8();
+            rando_stripe->offset = stripe_get_random();
         }
     } else {
         jak_stripes_rando_delay--;
@@ -154,25 +199,32 @@ static bool jack_row_stripes(effect_params_t* params) {
             row_stripe_t* rando_stripe = &(jak_row_stripes[idx]);
             if (rando_stripe->row_idx == 0 && rando_stripe->cur_delay == 0) {
                 rando_stripe->row_idx = jak_row_bounds[idx].min_idx;
-                uint8_t speed = 0x80 / (rgb_matrix_config.speed == 0 ? 1 : rgb_matrix_config.speed);
-                if (speed == 0) {
-                    speed = 1;
-                }
                 rando_stripe->cur_delay = stripe_get_delay(rando_stripe->row_idx);
-                rando_stripe->offset = random8();
+                rando_stripe->offset = stripe_get_random();
             }
         }
     }
 
     for (uint8_t i = led_min; i < led_max; i++) {
+        RGB_MATRIX_TEST_LED_FLAGS();
         if (jak_stripes_init) {
             rgb_matrix_set_color(i, 0, 0, 0);
         } else {
             HSV cur_hsv = rgb_matrix_config.hsv;
             uint8_t row_idx = led_idx_to_row_idx(i);
             row_stripe_t* cur_stripe = &(jak_row_stripes[row_idx]);
-            if (! (cur_stripe->row_idx == 0 && cur_stripe->cur_delay == 0) && i == cur_stripe->row_idx) {
-                cur_hsv.h += cur_stripe->offset;
+            // this row is inactive, set it to the previously set color
+            if (cur_stripe->row_idx == 0 && cur_stripe->cur_delay == 0) {
+                cur_hsv.h += cur_stripe->prev_offset.h;
+                cur_hsv.s = cur_stripe->prev_offset.s < cur_hsv.s ? cur_stripe->prev_offset.s : cur_hsv.s;
+                cur_hsv.v = cur_stripe->prev_offset.v < cur_hsv.v ? cur_stripe->prev_offset.v : cur_hsv.v;
+                RGB cur_r = hsv_to_rgb(cur_hsv);
+                rgb_matrix_set_color(i, cur_r.r, cur_r.g, cur_r.b);
+            // our row is active and we're the next one in line
+            } else if (! (cur_stripe->row_idx == 0 && cur_stripe->cur_delay == 0) && i == cur_stripe->row_idx) {
+                cur_hsv.h += cur_stripe->offset.h;
+                cur_hsv.s = cur_stripe->offset.s < cur_hsv.s ? cur_stripe->offset.s : cur_hsv.s;
+                cur_hsv.v = cur_stripe->offset.v < cur_hsv.v ? cur_stripe->offset.v : cur_hsv.v;
                 RGB cur_r = hsv_to_rgb(cur_hsv);
                 rgb_matrix_set_color(i, cur_r.r, cur_r.g, cur_r.b);
                 cur_stripe->cur_delay--;
@@ -187,8 +239,10 @@ static bool jack_row_stripes(effect_params_t* params) {
                     }
                 }
             } else {
-                if (i >= cur_stripe->row_idx && cur_stripe->prev_offset != 0) {
-                    cur_hsv.h += cur_stripe->prev_offset;
+                if (i >= cur_stripe->row_idx && cur_stripe->prev_offset.h != 0) {
+                    cur_hsv.h += cur_stripe->prev_offset.h;
+                    cur_hsv.s = cur_stripe->prev_offset.s < cur_hsv.s ? cur_stripe->prev_offset.s : cur_hsv.s;
+                    cur_hsv.v = cur_stripe->prev_offset.v < cur_hsv.v ? cur_stripe->prev_offset.v : cur_hsv.v;
                     RGB cur_r = hsv_to_rgb(cur_hsv);
                     rgb_matrix_set_color(i, cur_r.r, cur_r.g, cur_r.b);
                 }
