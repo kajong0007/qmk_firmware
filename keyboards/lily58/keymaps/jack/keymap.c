@@ -96,12 +96,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_MUTE, KC_VOLU, KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_DEL,  XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______, _______,  _______, _______, _______
   )
+//0        1        2        3        4        5        6        7        8        9        10       11       12       13
 };
+
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
@@ -117,9 +119,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
  */
 
 enum in_message_opcode {
-    WRITE_STR,
-    DISPLAY_IMAGE_LEFT,
-    DISPLAY_IMAGE_RIGHT
+    LEFT_WRITE_STR = 0,
+    RIGHT_WRITE_STR = 1,
+    SEND_IMAGE_LEFT = 2,
+    FINISH_IMAGE_LEFT = 3,
+    SEND_IMAGE_RIGHT = 4,
+    FINISH_IMAGE_RIGHT = 5,
 };
 
 struct in_message {
@@ -130,14 +135,8 @@ struct in_message {
 
 //SSD1306 OLED update loop, make sure to enable OLED_ENABLE=yes in rules.mk
 #ifdef OLED_ENABLE
-static uint32_t oled_timer = 0;
-
-static uint32_t sleep_timeout = 5000;
-
-char receive_data[32];
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  memset(receive_data, 0, sizeof(receive_data));
   if (!is_keyboard_master()) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
   }
@@ -157,17 +156,39 @@ const char *read_keylogs(void);
 // const char *read_timelog(void);
 
 
-#include "images.h"
+static bool show_image = false;
+static char left_image[512];
+static char left_image_recv_buffer[512];
 
-char image_number_buf[20];
-static bool timer_ping = false;
+static char left_lines[4][22];
+static bool left_display_lines[4] = {false, false, false, false};
 
 void raw_hid_receive(uint8_t* data, uint8_t length) {
     struct in_message *recv_msg = (struct in_message*) data;
     switch (recv_msg->opcode) {
-        case WRITE_STR: {
-            memset(receive_data, '\0', sizeof(receive_data));
-            memcpy(receive_data, recv_msg->data, 21);
+        case LEFT_WRITE_STR: {
+            char* which_line = left_lines[recv_msg->number];
+            memset(which_line, '\0', 22);
+            memcpy(which_line, recv_msg->data, 21);
+            which_line[21] = '\0';
+            left_display_lines[recv_msg->number] = true;
+            break;
+        }
+        case SEND_IMAGE_LEFT: {
+            size_t offset = recv_msg->number * sizeof(recv_msg->data);
+            size_t size = 30;
+            size_t buffer_left = sizeof(left_image_recv_buffer) - offset;
+            if (buffer_left < 30) {
+                size = buffer_left;
+            }
+            memset(&left_image_recv_buffer[offset], '\0', size);
+            memcpy(&left_image_recv_buffer[offset], recv_msg->data, size);
+            break;
+        }
+        case FINISH_IMAGE_LEFT: {
+            show_image = false;
+            memcpy(left_image, left_image_recv_buffer, sizeof(left_image));
+            show_image = true;
             break;
         }
         default: {
@@ -175,38 +196,84 @@ void raw_hid_receive(uint8_t* data, uint8_t length) {
         }
     }
 }
+static char image0[512] = {
+        // test_image.png
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x80, 0x80, 0xc0, 0x38, 0x00,
+    0x00, 0x3c, 0x20, 0x20, 0x20, 0x00, 0x00, 0x00, 0xf0, 0xb0, 0x28, 0xa8, 0xe4, 0x00, 0x00, 0x78, 0x10, 0x20, 0x7c, 0x02, 0x08, 0xc8, 0x38, 0x10,
+    0x10, 0x30, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16, 0x34, 0x74, 0x98, 0x00, 0x00, 0x60, 0xe0,
+    0x90, 0xb0, 0xe0, 0x00, 0x00, 0x88, 0x88, 0xa8, 0xf8, 0xb0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x08, 0x38, 0xf8, 0xf8, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x80, 0xc0, 0xc0, 0xc0, 0xc0, 0xc0, 0xc0, 0x00, 0x00, 0x00, 0xf0, 0xf0, 0xf0, 0x01, 0x01, 0x01, 0xc0, 0xc0, 0xc0, 0x00,
+    0x00, 0x00, 0x00, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xc0, 0xc0, 0x00, 0x00, 0xc0, 0xc0, 0xc0, 0xc1,
+    0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0xc0, 0xe0, 0xe0, 0x60, 0x30, 0x30, 0x30, 0x30,
+    0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x80, 0x81, 0x01, 0x01, 0x00, 0x00, 0x04, 0x04, 0x06, 0x07, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x80, 0xc0, 0xc0, 0xc0, 0xc0, 0x00, 0x00, 0xe0, 0xe0, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0x03,
+    0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x00, 0x00, 0x00, 0x1f, 0x1f, 0x3f, 0x30, 0x20, 0x2f, 0x3f, 0x3f, 0x30, 0x18, 0x1e, 0x0f, 0x07,
+    0x03, 0x00, 0x00, 0x0f, 0x0f, 0x0f, 0x09, 0x08, 0x08, 0x0c, 0x0f, 0x07, 0x03, 0x01, 0x00, 0x1f, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x04, 0x04, 0x1f,
+    0x1f, 0x1f, 0x06, 0x06, 0x07, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x04, 0x04, 0x04, 0x00, 0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x38,
+    0xf9, 0xfb, 0xcf, 0x8e, 0x8c, 0x08, 0x00, 0x00, 0x00, 0x00, 0x18, 0x3c, 0x3e, 0x36, 0x27, 0x3f, 0x3d, 0x38, 0x00, 0x00, 0x38, 0x3c, 0x3c, 0x24,
+    0x3c, 0x3c, 0x1c, 0x04, 0x04, 0x04, 0x04, 0x7c, 0x7c, 0x7c, 0x00, 0x07, 0x0f, 0x1f, 0x1f, 0x17, 0x17, 0x10, 0x10, 0x1f, 0x1f, 0x0f, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x03, 0x03, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
 
+static uint16_t cat_left_down = 0;
+//static uint16_t cat_left_timer = 0;
+static uint16_t cat_right_down = 0;
+//static uint16_t cat_right_timer = 0;
+
+#include "cat.h"
+
+static bool redraw_cat = false;
 
 bool oled_task_user(void) {
   if (is_keyboard_master()) {
-    // If you want to change the display of OLED, you need to change here
-    oled_write_ln(read_layer_state(), false);
-    oled_write_ln(read_keylog(), false);
-    oled_write_ln(read_keylogs(), false);
-    if (timer_elapsed32(oled_timer) < 750) {
-        if (timer_ping) {
-            oled_write_ln("Timer ping!", false);
-        }
+    if (show_image) {
+        oled_write_raw_P(left_image, sizeof(left_image));
     } else {
-        timer_ping = false;
-        oled_write_ln("           ", false);
+        bool any_displayed = false;
+
+        if (left_display_lines[0]) {
+            any_displayed = true;
+            oled_write_ln(left_lines[0], false);
+        }
+
+        if (left_display_lines[1]) {
+            any_displayed = true;
+            oled_write_ln(left_lines[1], false);
+        }
+
+        if (left_display_lines[2]) {
+            any_displayed = true;
+            oled_write_ln(left_lines[2], false);
+        }
+
+        if (left_display_lines[3]) {
+            any_displayed = true;
+            oled_write_ln(left_lines[3], false);
+        }
+
+        if (!any_displayed && redraw_cat) {
+            redraw_cat = false;
+            // teehee, cat time
+            if (cat_left_down > 0 && cat_right_down > 0) {
+                oled_write_raw_P(cat_both_down, sizeof(cat_both_down));
+            } else if (cat_left_down > 0) {
+                oled_write_raw_P(cat_f_down, sizeof(cat_f_down));
+            } else if (cat_right_down > 0) {
+                oled_write_raw_P(cat_j_down, sizeof(cat_j_down));
+            } else {
+                oled_write_raw_P(cat_all_up, sizeof(cat_all_up));
+            }
+        }
     }
-    if (timer_elapsed32(oled_timer) > sleep_timeout) {
-        timer_ping = true;
-        oled_timer = timer_read32();
-    }
-    oled_write_ln(receive_data, false);
-    //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
-    //oled_write_ln(read_host_led_state(), false);
-    //oled_write_ln(read_timelog(), false);
   } else {
-    if (timer_elapsed32(oled_timer) > sleep_timeout) {
-        oled_timer = timer_read32();
-        image_number++;
-        if (image_number >= image_max) image_number = 0;
-        oled_clear();
-    }
-    oled_write_raw_P(images[image_number], sizeof(image_0));
+      oled_write_raw_P(image0, sizeof(image0));
   }
     return false;
 }
@@ -214,10 +281,47 @@ bool oled_task_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
+    if (record->event.key.col <= 6) {
+        if (cat_left_down == 0) {
+            redraw_cat = true;
+        }
+        cat_left_down += 1;
+    } else {
+        if (cat_right_down == 0) {
+            redraw_cat = true;
+        }
+        cat_right_down += 1;
+    }
 #ifdef OLED_ENABLE
+    switch (keycode) {
+        case JAK_NEXT_IMAGE: {
+          show_image = false;
+          for (int i = 0; i < sizeof(left_display_lines); i++) {
+              left_display_lines[i] = false;
+          }
+          oled_clear();
+          return false;
+        }
+    }
     set_keylog(keycode, record);
 #endif
     // set_timelog();
+  } else {
+    if (record->event.key.col <= 6) {
+        if (cat_left_down > 0) {
+            cat_left_down -= 1;
+        }
+        if (cat_left_down == 0) {
+            redraw_cat = true;
+        }
+    } else {
+        if (cat_right_down > 0) {
+            cat_right_down -= 1;
+        }
+        if (cat_right_down == 0) {
+            redraw_cat = true;
+        }
+    }
   }
   return true;
 }
