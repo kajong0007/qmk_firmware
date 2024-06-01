@@ -229,7 +229,7 @@ static uint16_t cat_right_down = 0;
 
 #include "cat.h"
 
-static bool redraw_left = false;
+static bool redraw_left = true;
 static bool debug_draw_left = false;
 
 bool oled_task_user(void) {
