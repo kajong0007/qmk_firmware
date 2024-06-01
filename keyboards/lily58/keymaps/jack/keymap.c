@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
   KC_F1,  KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,                       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, XXXXXXX,
   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,   _______, _______,  KC_PLUS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
-                             _______, _______, _______,  _______, _______,  _______, _______, _______
+                             _______, _______, _______, _______, _______,  _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -96,8 +96,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_MUTE, KC_VOLU, KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_DEL,  XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LGUI(KC_ENT),                   KC_MUTE, KC_VOLU, KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LGUI(KC_ENT), XXXXXXX,                   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_DEL,  XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                              _______, _______, _______, _______, _______,  _______, _______, _______
   )
@@ -229,10 +229,16 @@ static uint16_t cat_right_down = 0;
 
 #include "cat.h"
 
-static bool redraw_cat = false;
+static bool redraw_left = false;
+static bool debug_draw_left = false;
 
 bool oled_task_user(void) {
   if (is_keyboard_master()) {
+    if (debug_draw_left && redraw_left) {
+        redraw_left = false;
+        oled_write_ln(read_keylog(), false);
+        return true;
+    }
     if (show_image) {
         oled_write_raw_P(left_image, sizeof(left_image));
     } else {
@@ -258,16 +264,23 @@ bool oled_task_user(void) {
             oled_write_ln(left_lines[3], false);
         }
 
-        if (!any_displayed && redraw_cat) {
-            redraw_cat = false;
+        if (!any_displayed && redraw_left) {
+            redraw_left = false;
+            bool drawn = false;
             // teehee, cat time
             if (cat_left_down > 0 && cat_right_down > 0) {
+                drawn = true;
                 oled_write_raw_P(cat_both_down, sizeof(cat_both_down));
-            } else if (cat_left_down > 0) {
+            }
+            if (cat_left_down > 0 && !drawn) {
+                drawn = true;
                 oled_write_raw_P(cat_f_down, sizeof(cat_f_down));
-            } else if (cat_right_down > 0) {
+            } 
+            if (cat_right_down > 0 && !drawn) {
+                drawn = true;
                 oled_write_raw_P(cat_j_down, sizeof(cat_j_down));
-            } else {
+            }
+            if (!drawn) {
                 oled_write_raw_P(cat_all_up, sizeof(cat_all_up));
             }
         }
@@ -281,14 +294,14 @@ bool oled_task_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-    if (record->event.key.col <= 6) {
+    if (record->event.key.row <= 4) {
         if (cat_left_down == 0) {
-            redraw_cat = true;
+            redraw_left = true;
         }
         cat_left_down += 1;
     } else {
         if (cat_right_down == 0) {
-            redraw_cat = true;
+            redraw_left = true;
         }
         cat_right_down += 1;
     }
@@ -302,24 +315,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           oled_clear();
           return false;
         }
+        case JAK_PREV_IMAGE: {
+          if (debug_draw_left) {
+              redraw_left = true;
+              debug_draw_left = false;
+          } else {
+              redraw_left = true;
+              debug_draw_left = true;
+          }
+          oled_clear();
+          return false;
+        }
     }
     set_keylog(keycode, record);
 #endif
     // set_timelog();
   } else {
-    if (record->event.key.col <= 6) {
+    if (record->event.key.row <= 4) {
         if (cat_left_down > 0) {
             cat_left_down -= 1;
         }
         if (cat_left_down == 0) {
-            redraw_cat = true;
+            redraw_left = true;
         }
     } else {
         if (cat_right_down > 0) {
             cat_right_down -= 1;
         }
         if (cat_right_down == 0) {
-            redraw_cat = true;
+            redraw_left = true;
         }
     }
   }
