@@ -154,6 +154,50 @@ JAK_TYPE_KEY(0b1101, KC_Q);
 JAK_TYPE_KEY(0b1111, KC_ENT);
 JAK_PROCESS_FUNCTION_CLOSE
 
+JAK_PROCESS_FUNCTION_OPEN(5);
+JAK_TYPE_KEY(0b00000, KC_5);
+JAK_TYPE_KEY(0b00001, KC_4);
+JAK_TYPE_KEY(0b00011, KC_3);
+JAK_TYPE_KEY(0b00111, KC_2);
+JAK_TYPE_KEY(0b01000, KC_AMPR);
+JAK_DO_OTHER(0b01100, "Hold Windows/super key for the next press", \
+    modifiers |= 0b0001; \
+    );
+JAK_TYPE_KEY(0b01111, KC_1);
+JAK_TYPE_KEY(0b10000, KC_6);
+JAK_TYPE_KEY(0b10010, KC_SLSH);
+JAK_DO_OTHER(0b10101, "Hold control for the next press", \
+    modifiers |= 0b0010; \
+    );
+JAK_TYPE_KEY(0b10110, KC_LPRN);
+JAK_TYPE_KEY(0b11000, KC_7);
+JAK_TYPE_KEY(0b11100, KC_8);
+JAK_TYPE_KEY(0b11110, KC_9);
+JAK_TYPE_KEY(0b11111, KC_0);
+JAK_PROCESS_FUNCTION_CLOSE
+
+JAK_PROCESS_FUNCTION_OPEN(6);
+JAK_DO_OTHER(0b000001, "Hold shift for the next press", \
+    modifiers |= 0b1000; \
+    );
+JAK_TYPE_KEY(0b001100, KC_QUES);
+JAK_DO_OTHER(0b010000, "Type # and reset keyboard", \
+    tap_code16(KC_HASH); \
+    reset_keyboard(); \
+    );
+JAK_TYPE_KEY(0b010010, KC_DQT);
+JAK_DO_OTHER(0b010100, "Hold alt for the next press", \
+    modifiers |= 0b0100; \
+    );
+JAK_TYPE_KEY(0b010101, KC_DOT);
+JAK_TYPE_KEY(0b011110, KC_QUOT);
+JAK_TYPE_KEY(0b101010, KC_SCLN);
+JAK_TYPE_KEY(0b101011, KC_EXLM);
+JAK_TYPE_KEY(0b101101, KC_RPRN);
+JAK_TYPE_KEY(0b110011, KC_COMM);
+JAK_TYPE_KEY(0b111000, S(KC_SCLN));
+JAK_PROCESS_FUNCTION_CLOSE
+
 JAK_PROCESS_FUNCTION_OPEN(7);
 JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
         DIT_DURATION = 100;\
@@ -163,247 +207,38 @@ JAK_DO_OTHER(0b0000001, "Set dit duration to 50ms", \
         );
 JAK_PROCESS_FUNCTION_CLOSE
 
+JAK_PROCESS_FUNCTION_OPEN(9);
+JAK_DO_OTHER(0b000111000, "Toggle display of dots and dashes before resolving morse code", \
+            if (visible) { \
+                visible = false; \
+            } else { \
+                visible = true; \
+            } \
+        );
+JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters they represent in morse code", \
+            if (render) { \
+                render = false; \
+            } else { \
+                render = true; \
+            } \
+        );
+JAK_PROCESS_FUNCTION_CLOSE
+
+
 #undef JAK_PROCESS_FUNCTION_OPEN
 #undef JAK_PROCESS_FUNCTION_CLOSE
 #undef JAK_TYPE_KEY
 #undef JAK_DO_OTHER
-//void process_1(void) {
-//    switch (code) {
-//        case 0b0:
-//            tap_code16(KC_E);
-//            break;
-//        case 0b1:
-//            tap_code16(KC_T);
-//            break;
-//    }
-//}
-//void process_7(void) {
-//    switch (code) {
-//        case 0b0000000:
-//            DIT_DURATION = 100;
-//            break;
-//        case 0b0000001:
-//            DIT_DURATION = 50;
-//            break;
-//    }
-//    SHORT_GAP = 3 * DIT_DURATION;
-//}
-
-//void process_2(void) {
-//    switch (code) {
-//        case 0b00:
-//            tap_code16(KC_I);
-//            break;
-//        case 0b01:
-//            tap_code16(KC_A);
-//            break;
-//        case 0b10:
-//            tap_code16(KC_N);
-//            break;
-//        case 0b11:
-//            tap_code16(KC_M);
-//            break;
-//    }
-//}
-
-//void process_3(void) {
-//    switch (code) {
-//        case 0b000:
-//            tap_code16(KC_S);
-//            break;
-//        case 0b001:
-//            tap_code16(KC_U);
-//            break;
-//        case 0b010:
-//            tap_code16(KC_R);
-//            break;
-//        case 0b011:
-//            tap_code16(KC_W);
-//            break;
-//        case 0b100:
-//            tap_code16(KC_D);
-//            break;
-//        case 0b101:
-//            tap_code16(KC_K);
-//            break;
-//        case 0b110:
-//            tap_code16(KC_G);
-//            break;
-//        case 0b111:
-//            tap_code16(KC_O);
-//            break;
-//    }
-//}
-
-//void process_4(void) {
-//    switch (code) {
-//        case 0b0000:
-//            tap_code16(KC_H);
-//            break;
-//        case 0b0001:
-//            tap_code16(KC_V);
-//            break;
-//        case 0b0010:
-//            tap_code16(KC_F);
-//            break;
-//        case 0b0011:
-//            tap_code16(KC_BSPC);
-//            break;
-//        case 0b0100:
-//            tap_code16(KC_L);
-//            break;
-//        case 0b0101:
-//            tap_code16(KC_SPC);
-//            break;
-//        case 0b0110:
-//            tap_code16(KC_P);
-//            break;
-//        case 0b0111:
-//            tap_code16(KC_J);
-//            break;
-//        case 0b1000:
-//            tap_code16(KC_B);
-//            break;
-//        case 0b1001:
-//            tap_code16(KC_X);
-//            break;
-//        case 0b1010:
-//            tap_code16(KC_C);
-//            break;
-//        case 0b1011:
-//            tap_code16(KC_Y);
-//            break;
-//        case 0b1100:
-//            tap_code16(KC_Z);
-//            break;
-//        case 0b1101:
-//            tap_code16(KC_Q);
-//            break;
-//        case 0b1111:
-//            tap_code16(KC_ENT);
-//            break;
-//    }
-//}
-
-void process_5(void) {
-    switch (code) {
-        case 0b00000:
-            tap_code16(KC_5);
-            break;
-        case 0b00001:
-            tap_code16(KC_4);
-            break;
-        case 0b00011:
-            tap_code16(KC_3);
-            break;
-        case 0b00111:
-            tap_code16(KC_2);
-            break;
-        case 0b01000:
-            tap_code16(KC_AMPR);
-            break;
-        case 0b01100:
-            // WI - win key
-            modifiers |= 0b0001;
-            break;
-        case 0b01111:
-            tap_code16(KC_1);
-            break;
-        case 0b10000:
-            tap_code16(KC_6);
-            break;
-        case 0b10010:
-            tap_code16(KC_SLSH);
-            break;
-        case 0b10101:
-            // CT - ctrl
-            modifiers |= 0b0010;
-            break;
-        case 0b10110:
-            tap_code16(KC_LPRN);
-            break;
-        case 0b11000:
-            tap_code16(KC_7);
-            break;
-        case 0b11100:
-            tap_code16(KC_8);
-            break;
-        case 0b11110:
-            tap_code16(KC_9);
-            break;
-        case 0b11111:
-            tap_code16(KC_0);
-            break;
-    }
-}
-
-void process_6(void) {
-    switch (code) {
-        case 0b000001:
-            // SIT - Shift
-            modifiers |= 0b1000;
-            break;
-        case 0b001100:
-            tap_code16(KC_QUES);
-            break;
-        case 0b010000:
-            tap_code16(KC_HASH); // reset does not trigger alone. So I have added hash here.
-            reset_keyboard();
-            break;
-        case 0b010010:
-            tap_code16(KC_DQT);
-            break;
-        case 0b010100:
-            // AL - Alt
-            modifiers |= 0b0100;
-            break;
-        case 0b010101:
-            tap_code16(KC_DOT);
-            break;
-        case 0b011110:
-            tap_code16(KC_QUOT);
-            break;
-        case 0b101010:
-            tap_code16(KC_SCLN);
-            break;
-        case 0b101011:
-            tap_code16(KC_EXLM);
-            break;
-        case 0b101101:
-            tap_code16(KC_RPRN);
-            break;
-        case 0b110011:
-            tap_code16(KC_COMM);
-            break;
-        case 0b111000:
-            tap_code16(S(KC_SCLN));
-            break;
-
-    }
-}
-
-
-void process_9(void) {
-    switch (code) {
-        case 0b000111000:
-            if (visible) {
-                visible = false;
-            } else {
-                visible = true;
-            }
-            break;
-        case 0b111000111:
-            if (render) {
-                render = false;
-            } else {
-                render = true;
-            }
-            break;
-    }
-}
 
 void matrix_scan_user(void) {
     if (timer_started == 0 && timer_ended != 0 && timer_elapsed(timer_ended) > DIT_DURATION * 3) {
+        if (visible && render) {
+            int del_bits;
+            for (del_bits = 0; del_bits < code_length; del_bits++) {
+                SEND_STRING(SS_TAP(X_BSPC) SS_DELAY(1));
+            }
+            SEND_STRING(SS_DELAY(5));
+        }
 
         // handle modifiers (register)
         uint8_t old_modifiers = modifiers;
@@ -418,13 +253,6 @@ void matrix_scan_user(void) {
         }
         if ((modifiers & 0b1000) == 0b1000) {
             register_code(KC_LSFT);
-        }
-
-        if (visible && render) {
-            int del_bits;
-            for (del_bits = 0; del_bits < code_length; del_bits++) {
-                tap_code16(KC_BSPC);
-            }
         }
 #define BUT_RENDER(x) do {\
     if (render) {\
