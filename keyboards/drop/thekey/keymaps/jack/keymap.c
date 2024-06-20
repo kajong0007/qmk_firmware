@@ -103,7 +103,8 @@ void process_##x(void) {\
         } while(0)
 #define JAK_PROCESS_FUNCTION_CLOSE \
     }\
-}
+}\
+//
 #define JAK_TYPE_KEY(bits, keycode) \
         case bits:\
             tap_code16(keycode);\
@@ -116,14 +117,14 @@ void process_##x(void) {\
 JAK_PROCESS_FUNCTION_OPEN(1);
 JAK_TYPE_KEY(0b0, KC_E);
 JAK_TYPE_KEY(0b1, KC_T);
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(2);
 JAK_TYPE_KEY(0b00, KC_I);
 JAK_TYPE_KEY(0b01, KC_A);
 JAK_TYPE_KEY(0b10, KC_N);
 JAK_TYPE_KEY(0b11, KC_M);
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(3);
 JAK_TYPE_KEY(0b000, KC_S);
@@ -134,7 +135,7 @@ JAK_TYPE_KEY(0b100, KC_D);
 JAK_TYPE_KEY(0b101, KC_K);
 JAK_TYPE_KEY(0b110, KC_G);
 JAK_TYPE_KEY(0b111, KC_O);
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(4);
 JAK_TYPE_KEY(0b0000, KC_H);
@@ -152,7 +153,7 @@ JAK_TYPE_KEY(0b1011, KC_Y);
 JAK_TYPE_KEY(0b1100, KC_Z);
 JAK_TYPE_KEY(0b1101, KC_Q);
 JAK_TYPE_KEY(0b1111, KC_ENT);
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(5);
 JAK_TYPE_KEY(0b00000, KC_5);
@@ -174,7 +175,7 @@ JAK_TYPE_KEY(0b11000, KC_7);
 JAK_TYPE_KEY(0b11100, KC_8);
 JAK_TYPE_KEY(0b11110, KC_9);
 JAK_TYPE_KEY(0b11111, KC_0);
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(6);
 JAK_DO_OTHER(0b000001, "Hold shift for the next press", \
@@ -196,7 +197,7 @@ JAK_TYPE_KEY(0b101011, KC_EXLM);
 JAK_TYPE_KEY(0b101101, KC_RPRN);
 JAK_TYPE_KEY(0b110011, KC_COMM);
 JAK_TYPE_KEY(0b111000, S(KC_SCLN));
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(7);
 JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
@@ -205,7 +206,7 @@ JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
 JAK_DO_OTHER(0b0000001, "Set dit duration to 50ms", \
         DIT_DURATION = 50;\
         );
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(9);
 JAK_DO_OTHER(0b000111000, "Toggle display of dots and dashes before resolving morse code", \
@@ -222,7 +223,7 @@ JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters th
                 render = true; \
             } \
         );
-JAK_PROCESS_FUNCTION_CLOSE
+JAK_PROCESS_FUNCTION_CLOSE;
 
 
 #undef JAK_PROCESS_FUNCTION_OPEN
@@ -286,6 +287,7 @@ void matrix_scan_user(void) {
                 process_9();
                 break;
         }
+
 
         // handle modifiers (unregister). Unregister all modifiers if non modifier key is pressed
         if (old_modifiers == modifiers) {

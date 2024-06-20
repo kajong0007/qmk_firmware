@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+
+import functools
+import pathlib
+import re
+import sys
+
+FUNCTION_START_RE = re.compile(
+        r"JAK_PROCESS_FUNCTION_OPEN[(](?P<number>[0-9]+)[)].*")
+TYPE_RE = re.compile(
+        r"JAK_TYPE_KEY[(]0b(?P<bits>[01]+), *(?P<keycode>[()A-Z_0-9]+) *[)]")
+OTHER_STUFF_RE = re.compile(
+        r'JAK_DO_OTHER[(]0b(?P<bits>[01]+), *"(?P<explanation>[^"]*)".*'
+        )
+FUNCTION_END_RE = re.compile(
+        r"JAK_PROCESS_FUNCTION_CLOSE")
+JUST_INNOCENT_KEYCODE = re.compile(
+        r"KC_(?P<etcetera>.*)")
+
+def main():
+    cur_dir = pathlib.Path(__file__)
+    cur_dir = cur_dir.absolute().parent
+    source_file = str(cur_dir / "keymap.c")
+    keybind_lines = []
+    with open(source_file, "r") as f:
+        keybind_lines = [i.strip() for i in f.readlines() if i.startswith("JAK")]
+    if len(keybind_lines) == 0:
+        raise Exception("Didn't find any keybinding lines")
+    max_key = 0
+    by_length = {}
+    out_of_function = True
+    cur_list = None
+    all_list = []
+    for line in keybind_lines:
+        start_match = FUNCTION_START_RE.match(line)
+        type_match = TYPE_RE.match(line)
+        other_match = OTHER_STUFF_RE.match(line)
+        end_match = FUNCTION_END_RE.match(line)
+        if out_of_function:
+            if start_match:
+                out_of_function = False
+                l = int(start_match.groupdict()["number"])
+                by_length[l] = []
+                cur_list = by_length[l]
+                if l > max_key:
+                    max_key = l
+                continue
+        else:
+            if end_match:
+                cur_list = None
+                out_of_function = True
+                continue
+            g = {}
+            if type_match:
+                g = type_match.groupdict()
+                content = g["keycode"]
+                innocent = JUST_INNOCENT_KEYCODE.match(content)
+                if innocent:
+                    content = innocent.groupdict()["etcetera"]
+            if other_match:
+                g = other_match.groupdict()
+                content = g["explanation"]
+            bits = g["bits"]
+            bits = bits.replace("1", "-")
+            bits = bits.replace("0", ".")
+            info = (content, bits)
+            cur_list.append(info)
+            all_list.append(info)
+    sorted_by_content = sorted(all_list, key=functools.cmp_to_key(lambda x,y: x[0] < y[0]))
+    for idx in range(max_key+1):
+        if idx not in by_length:
+            continue
+        print(f"# {idx}")
+        print("| code | action | | code | action |")
+        print("|------|--------|-|------|--------|")
+        actions = by_length[idx]
+        if len(actions) % 2 == 1:
+            actions.append(('', ''))
+        for adx in range(0, len(actions), 2):
+            a0, c0 = actions[adx]
+            a1, c1 = actions[adx+1]
+            print(f"| {c0} | {a0} | | {c1} | {a1} |")
+        print()
+    if len(sorted_by_content) % 2 == 1:
+        sorted_by_content.append( ("","") )
+
+    print("| code | action | | code | action |")
+    print("|------|--------|-|------|--------|")
+    for idx in range(0, len(sorted_by_content)//2):
+        a0, c0 = sorted_by_content[idx]
+        a1, c1 = sorted_by_content[idx + (len(sorted_by_content)//2)]
+        print(f"| {c0} | {a0} | | {c1} | {a1} |")
+
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
