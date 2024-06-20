@@ -1,3 +1,3 @@
 Code modified from here
 
-https://github.com/daliusd/qmk\_firmware/tree/morsilka/keyboards/a\_dux/keymaps/morsilka
+https://github.com/daliusd/qmk_firmware/tree/morsilka/keyboards/a_dux/keymaps/morsilka
