@@ -28,7 +28,7 @@
 | -... | B | | -..- | X |
 | -.-. | C | | -.-- | Y |
 | --.. | Z | | --.- | Q |
-| ---- | ENT | |  |  |
+| ---. | 🫡 | | ---- | ENT |
 
 # 5
 | code | action | | code | action |
@@ -47,15 +47,21 @@
 |------|--------|-|------|--------|
 | .....- | Hold shift for the next press | | ..--.. | QUES |
 | .-.... | Type # and reset keyboard | | .-..-. | DQT |
-| .-.-.. | Hold alt for the next press | | .-.-.- | DOT |
-| .----. | QUOT | | -.-.-. | SCLN |
-| -.-.-- | EXLM | | -.--.- | RPRN |
-| --..-- | COMM | | ---... | S(KC_SCLN) |
+| .-.-.. | Hold alt for the next press | | ....-. | MINS |
+| ...--. | 😎 | | ...--- | 😏 |
+| ....-- | ✨ | | ..-.-- | 🔥 |
+| ...... | 🗾 | | --.-.. | 🚠 |
+| ...-.. | 👀 | | ...-.- | 😳 |
+| .-.-.- | DOT | | .----. | QUOT |
+| -.-.-. | SCLN | | -.-.-- | EXLM |
+| -.--.- | RPRN | | --..-- | COMM |
+| ---... | S(KC_SCLN) | |  |  |
 
 # 7
 | code | action | | code | action |
 |------|--------|-|------|--------|
 | ....... | Set dit duration to 100ms | | ......- | Set dit duration to 50ms |
+| --....- | Switch to next unicode mode | | --..... | Type current unicode input mode |
 
 # 9
 | code | action | | code | action |
@@ -64,33 +70,39 @@
 
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| . | E | | ....- | 4 |
-| - | T | | ...-- | 3 |
-| .. | I | | ..--- | 2 |
-| .- | A | | .-... | AMPR |
-| -. | N | | .--.. | Hold Windows/super key for the next press |
-| -- | M | | .---- | 1 |
-| ... | S | | -.... | 6 |
-| ..- | U | | -..-. | SLSH |
-| .-. | R | | -.-.- | Hold control for the next press |
-| .-- | W | | -.--. | LPRN |
-| -.. | D | | --... | 7 |
-| -.- | K | | ---.. | 8 |
-| --. | G | | ----. | 9 |
-| --- | O | | ----- | 0 |
-| .... | H | | .....- | Hold shift for the next press |
-| ...- | V | | ..--.. | QUES |
-| ..-. | F | | .-.... | Type # and reset keyboard |
-| ..-- | BSPC | | .-..-. | DQT |
-| .-.. | L | | .-.-.. | Hold alt for the next press |
-| .-.- | SPC | | .-.-.- | DOT |
-| .--. | P | | .----. | QUOT |
-| .--- | J | | -.-.-. | SCLN |
-| -... | B | | -.-.-- | EXLM |
-| -..- | X | | -.--.- | RPRN |
-| -.-. | C | | --..-- | COMM |
-| -.-- | Y | | ---... | S(KC_SCLN) |
-| --.. | Z | | ....... | Set dit duration to 100ms |
-| --.- | Q | | ......- | Set dit duration to 50ms |
-| ---- | ENT | | ...---... | Toggle display of dots and dashes before resolving morse code |
-| ..... | 5 | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
+| . | E | | .---- | 1 |
+| - | T | | -.... | 6 |
+| .. | I | | -..-. | SLSH |
+| .- | A | | -.-.- | Hold control for the next press |
+| -. | N | | -.--. | LPRN |
+| -- | M | | --... | 7 |
+| ... | S | | ---.. | 8 |
+| ..- | U | | ----. | 9 |
+| .-. | R | | ----- | 0 |
+| .-- | W | | .....- | Hold shift for the next press |
+| -.. | D | | ..--.. | QUES |
+| -.- | K | | .-.... | Type # and reset keyboard |
+| --. | G | | .-..-. | DQT |
+| --- | O | | .-.-.. | Hold alt for the next press |
+| .... | H | | ....-. | MINS |
+| ...- | V | | ...--. | 😎 |
+| ..-. | F | | ...--- | 😏 |
+| ..-- | BSPC | | ....-- | ✨ |
+| .-.. | L | | ..-.-- | 🔥 |
+| .-.- | SPC | | ...... | 🗾 |
+| .--. | P | | --.-.. | 🚠 |
+| .--- | J | | ...-.. | 👀 |
+| -... | B | | ...-.- | 😳 |
+| -..- | X | | .-.-.- | DOT |
+| -.-. | C | | .----. | QUOT |
+| -.-- | Y | | -.-.-. | SCLN |
+| --.. | Z | | -.-.-- | EXLM |
+| --.- | Q | | -.--.- | RPRN |
+| ---. | 🫡 | | --..-- | COMM |
+| ---- | ENT | | ---... | S(KC_SCLN) |
+| ..... | 5 | | ....... | Set dit duration to 100ms |
+| ....- | 4 | | ......- | Set dit duration to 50ms |
+| ...-- | 3 | | --....- | Switch to next unicode mode |
+| ..--- | 2 | | --..... | Type current unicode input mode |
+| .-... | AMPR | | ...---... | Toggle display of dots and dashes before resolving morse code |
+| .--.. | Hold Windows/super key for the next press | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |

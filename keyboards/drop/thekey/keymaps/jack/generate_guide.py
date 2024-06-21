@@ -12,6 +12,9 @@ TYPE_RE = re.compile(
 OTHER_STUFF_RE = re.compile(
         r'JAK_DO_OTHER[(]0b(?P<bits>[01]+), *"(?P<explanation>[^"]*)".*'
         )
+UNICODE_RE = re.compile(
+        r'JAK_TYPE_UNICODE[(]0b(?P<bits>[01]+), *"(?P<unicode_char>[^"]*)".*'
+        )
 FUNCTION_END_RE = re.compile(
         r"JAK_PROCESS_FUNCTION_CLOSE")
 JUST_INNOCENT_KEYCODE = re.compile(
@@ -36,6 +39,7 @@ def main():
         type_match = TYPE_RE.match(line)
         other_match = OTHER_STUFF_RE.match(line)
         end_match = FUNCTION_END_RE.match(line)
+        unicode_match = UNICODE_RE.match(line)
         if out_of_function:
             if start_match:
                 out_of_function = False
@@ -60,6 +64,9 @@ def main():
             if other_match:
                 g = other_match.groupdict()
                 content = g["explanation"]
+            if unicode_match:
+                g = unicode_match.groupdict()
+                content = g["unicode_char"]
             bits = g["bits"]
             bits = bits.replace("1", "-")
             bits = bits.replace("0", ".")

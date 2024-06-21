@@ -33,6 +33,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(JAK_MORSE, KC_SPC, KC_BSPC)
 };
 
+const uint32_t PROGMEM unicode_map[] = {};
+
 #define DIT_DEFAULT 100
 //#define SHORT_GAP (DIT_DURATION * 3)
 
@@ -113,6 +115,10 @@ void process_##x(void) {\
         case bits:\
             code\
             break
+#define JAK_TYPE_UNICODE(bits, character) \
+        case bits:\
+            send_unicode_string(character);\
+            break
 
 JAK_PROCESS_FUNCTION_OPEN(1);
 JAK_TYPE_KEY(0b0, KC_E);
@@ -152,6 +158,7 @@ JAK_TYPE_KEY(0b1010, KC_C);
 JAK_TYPE_KEY(0b1011, KC_Y);
 JAK_TYPE_KEY(0b1100, KC_Z);
 JAK_TYPE_KEY(0b1101, KC_Q);
+JAK_TYPE_UNICODE(0b1110, "🫡");
 JAK_TYPE_KEY(0b1111, KC_ENT);
 JAK_PROCESS_FUNCTION_CLOSE;
 
@@ -177,6 +184,55 @@ JAK_TYPE_KEY(0b11110, KC_9);
 JAK_TYPE_KEY(0b11111, KC_0);
 JAK_PROCESS_FUNCTION_CLOSE;
 
+
+// so many 6 keycodes unused
+//0b001000
+//0b001001
+//0b001010
+//0b001101
+//0b001110
+//0b001111
+//0b010001
+//0b010011
+//0b010100
+//0b010110
+//0b010111
+//0b011000
+//0b011001
+//0b011010
+//0b011011
+//0b011100
+//0b011101
+//0b011111
+//0b100000
+//0b100001
+//0b100010
+//0b100011
+//0b100100
+//0b100101
+//0b100110
+//0b100111
+//0b101000
+//0b101001
+//0b101011
+//0b101100
+//0b101101
+//0b101110
+//0b101111
+//0b110000
+//0b110001
+//0b110010
+//0b110011
+//0b110101
+//0b110110
+//0b110111
+//0b111001
+//0b111010
+//0b111011
+//0b111100
+//0b111101
+//0b111110
+//0b111111
 JAK_PROCESS_FUNCTION_OPEN(6);
 JAK_DO_OTHER(0b000001, "Hold shift for the next press", \
     modifiers |= 0b1000; \
@@ -190,6 +246,15 @@ JAK_TYPE_KEY(0b010010, KC_DQT);
 JAK_DO_OTHER(0b010100, "Hold alt for the next press", \
     modifiers |= 0b0100; \
     );
+JAK_TYPE_KEY(0b000010, KC_MINS);
+JAK_TYPE_UNICODE(0b000110, "😎");
+JAK_TYPE_UNICODE(0b000111, "😏");
+JAK_TYPE_UNICODE(0b000011, "✨");
+JAK_TYPE_UNICODE(0b001011, "🔥");
+JAK_TYPE_UNICODE(0b000000, "🗾");
+JAK_TYPE_UNICODE(0b110100, "🚠");
+JAK_TYPE_UNICODE(0b000100, "👀");
+JAK_TYPE_UNICODE(0b000101, "😳");
 JAK_TYPE_KEY(0b010101, KC_DOT);
 JAK_TYPE_KEY(0b011110, KC_QUOT);
 JAK_TYPE_KEY(0b101010, KC_SCLN);
@@ -205,6 +270,22 @@ JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
         );
 JAK_DO_OTHER(0b0000001, "Set dit duration to 50ms", \
         DIT_DURATION = 50;\
+        );
+JAK_DO_OTHER(0b1100001, "Switch to next unicode mode", \
+        unicode_input_mode_step();\
+        );
+JAK_DO_OTHER(0b1100000, "Type current unicode input mode", \
+        switch(get_unicode_input_mode()) { \
+            case UNICODE_MODE_MACOS: \
+                SEND_STRING("MacOS"); \
+                break; \
+            case UNICODE_MODE_WINDOWS: \
+                SEND_STRING("Windows"); \
+                break; \
+            case UNICODE_MODE_LINUX: \
+                SEND_STRING("Linux"); \
+                break; \
+        } \
         );
 JAK_PROCESS_FUNCTION_CLOSE;
 
@@ -310,4 +391,24 @@ void matrix_scan_user(void) {
         code_length = 0;
         code = 0;
     }
+}
+
+bool process_detected_host_os_user(os_variant_t detected_os) {
+        switch (detected_os) {
+        case OS_MACOS:
+        case OS_IOS:
+            set_unicode_input_mode(UNICODE_MODE_MACOS);
+            break;
+        case OS_WINDOWS:
+            set_unicode_input_mode(UNICODE_MODE_WINDOWS);
+            break;
+        case OS_LINUX:
+            set_unicode_input_mode(UNICODE_MODE_LINUX);
+            break;
+        case OS_UNSURE:
+            set_unicode_input_mode(UNICODE_MODE_WINDOWS);
+            break;
+    }
+
+    return true;
 }
