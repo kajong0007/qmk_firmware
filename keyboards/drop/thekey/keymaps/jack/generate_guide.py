@@ -84,9 +84,10 @@ def main():
         actions = by_length[idx]
         if len(actions) % 2 == 1:
             actions.append(('', ''))
-        for adx in range(0, len(actions), 2):
+        actions = sorted(actions, key=functools.cmp_to_key(lambda x,y: x[0] < y[0]))
+        for adx in range(0, len(actions)//2):
             a0, c0 = actions[adx]
-            a1, c1 = actions[adx+1]
+            a1, c1 = actions[adx + (len(actions)//2)]
             print(f"| {c0} | {a0} | | {c1} | {a1} |")
         print()
     if len(sorted_by_content) % 2 == 1:

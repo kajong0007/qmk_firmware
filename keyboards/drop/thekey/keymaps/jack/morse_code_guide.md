@@ -7,61 +7,61 @@
 # 2
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .. | I | | .- | A |
-| -. | N | | -- | M |
+| .. | I | | -. | N |
+| .- | A | | -- | M |
 
 # 3
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ... | S | | ..- | U |
-| .-. | R | | .-- | W |
-| -.. | D | | -.- | K |
-| --. | G | | --- | O |
+| ... | S | | -.. | D |
+| ..- | U | | -.- | K |
+| .-. | R | | --. | G |
+| .-- | W | | --- | O |
 
 # 4
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .... | H | | ...- | V |
-| ..-. | F | | ..-- | BSPC |
-| .-.. | L | | .-.- | SPC |
-| .--. | P | | .--- | J |
-| -... | B | | -..- | X |
-| -.-. | C | | -.-- | Y |
-| --.. | Z | | --.- | Q |
-| ---. | 🫡 | | ---- | ENT |
+| .... | H | | -... | B |
+| ...- | V | | -..- | X |
+| ..-. | F | | -.-. | C |
+| ..-- | BSPC | | -.-- | Y |
+| .-.. | L | | --.. | Z |
+| .-.- | SPC | | --.- | Q |
+| .--. | P | | ---. | 🫡 |
+| .--- | J | | ---- | ENT |
 
 # 5
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ..... | 5 | | ....- | 4 |
-| ...-- | 3 | | ..--- | 2 |
-| .-... | AMPR | | .--.. | Hold Windows/super key for the next press |
-| .---- | 1 | | -.... | 6 |
-| -..-. | SLSH | | -.-.- | Hold control for the next press |
-| -.--. | LPRN | | --... | 7 |
-| ---.. | 8 | | ----. | 9 |
-| ----- | 0 | |  |  |
+| ..... | 5 | | -..-. | SLSH |
+| ....- | 4 | | -.-.- | Hold control for the next press |
+| ...-- | 3 | | -.--. | LPRN |
+| ..--- | 2 | | --... | 7 |
+| .-... | AMPR | | ---.. | 8 |
+| .--.. | Hold Windows/super key for the next press | | ----. | 9 |
+| .---- | 1 | | ----- | 0 |
+| -.... | 6 | |  |  |
 
 # 6
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .....- | Hold shift for the next press | | ..--.. | QUES |
-| .-.... | Type # and reset keyboard | | .-..-. | DQT |
-| .-.-.. | Hold alt for the next press | | ....-. | MINS |
-| ...--. | 😎 | | ...--- | 😏 |
-| ....-- | ✨ | | ..-.-- | 🔥 |
-| ...... | 🗾 | | --.-.. | 🚠 |
-| ...-.. | 👀 | | ...-.- | 😳 |
-| .-.-.- | DOT | | .----. | QUOT |
-| -.-.-. | SCLN | | -.-.-- | EXLM |
-| -.--.- | RPRN | | --..-- | COMM |
-| ---... | S(KC_SCLN) | |  |  |
+| .....- | Hold shift for the next press | | --.-.. | 🚠 |
+| ..--.. | QUES | | ...-.. | 👀 |
+| .-.... | Type # and reset keyboard | | ...-.- | 😳 |
+| .-..-. | DQT | | .-.-.- | DOT |
+| .-.-.. | Hold alt for the next press | | .----. | QUOT |
+| ....-. | MINS | | -.-.-. | SCLN |
+| ...--. | 😎 | | -.-.-- | EXLM |
+| ...--- | 😏 | | -.--.- | RPRN |
+| ....-- | ✨ | | --..-- | COMM |
+| ..-.-- | 🔥 | | ---... | S(KC_SCLN) |
+| ...... | 🗾 | |  |  |
 
 # 7
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ....... | Set dit duration to 100ms | | ......- | Set dit duration to 50ms |
-| --....- | Switch to next unicode mode | | --..... | Type current unicode input mode |
+| ....... | Set dit duration to 100ms | | --....- | Switch to next unicode mode |
+| ......- | Set dit duration to 50ms | | --..... | Type current unicode input mode |
 
 # 9
 | code | action | | code | action |
