@@ -33,17 +33,18 @@
 # 5
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ..... | 5 | | --... | 7 |
-| ....- | 4 | | ---.. | 8 |
-| ...-- | 3 | | ----. | 9 |
-| ..--- | 2 | | ----- | 0 |
-| .-... | AMPR | | ---.- | ESC |
-| .--.. | Hold Windows/super key for the next press | | --.-. | LBRC |
-| .---- | 1 | | --.-- | RBRC |
-| -.... | 6 | | .-.-. | LCBR |
-| -..-. | SLSH | | .-.-- | RCBR |
-| -.-.- | Hold control for the next press | | ..-.. | GRV |
-| -.--. | LPRN | | ..-.- | TILD |
+| ..... | 5 | | ---.. | 8 |
+| ....- | 4 | | ----. | 9 |
+| ...-- | 3 | | ----- | 0 |
+| ..--- | 2 | | ---.- | ESC |
+| .-... | AMPR | | --.-. | LBRC |
+| .--.. | Hold Windows/super key for the next press | | --.-- | RBRC |
+| .---- | 1 | | .-.-. | LCBR |
+| -.... | 6 | | .-.-- | RCBR |
+| -..-. | SLSH | | ..-.. | GRV |
+| -.-.- | Hold control for the next press | | ..-.- | TILD |
+| -.--. | LPRN | | ...-. | TAB |
+| --... | 7 | |  |  |
 
 # 6
 | code | action | | code | action |
@@ -51,14 +52,14 @@
 | .....- | Hold shift for the next press | | --.-.. | 🚠 |
 | ..--.. | QUES | | ...-.. | 👀 |
 | .-.... | Type # and reset keyboard | | ...-.- | 😳 |
-| .-..-. | DQT | | .-.-.- | DOT |
-| .-.-.. | Hold alt for the next press | | .----. | QUOT |
-| ....-. | MINS | | -.-.-. | SCLN |
-| ...--. | 😎 | | -.-.-- | EXLM |
-| ...--- | 😏 | | -.--.- | RPRN |
-| ....-- | ✨ | | --..-- | COMM |
-| ..-.-- | 🔥 | | ---... | S(KC_SCLN) |
-| ...... | 🗾 | |  |  |
+| .-..-. | DQT | | -..... | 👍 |
+| .-.-.. | Hold alt for the next press | | .-.-.- | DOT |
+| ....-. | MINS | | .----. | QUOT |
+| ...--. | 😎 | | -.-.-. | SCLN |
+| ...--- | 😏 | | -.-.-- | EXLM |
+| ....-- | ✨ | | -.--.- | RPRN |
+| ..-.-- | 🔥 | | --..-- | COMM |
+| ...... | 🗾 | | ---... | S(KC_SCLN) |
 
 # 7
 | code | action | | code | action |
@@ -73,18 +74,18 @@
 
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| . | E | | -.--. | LPRN |
-| - | T | | --... | 7 |
-| .. | I | | ---.. | 8 |
-| .- | A | | ----. | 9 |
-| -. | N | | ----- | 0 |
-| -- | M | | ---.- | ESC |
-| ... | S | | --.-. | LBRC |
-| ..- | U | | --.-- | RBRC |
-| .-. | R | | .-.-. | LCBR |
-| .-- | W | | .-.-- | RCBR |
-| -.. | D | | ..-.. | GRV |
-| -.- | K | | ..-.- | TILD |
+| . | E | | --... | 7 |
+| - | T | | ---.. | 8 |
+| .. | I | | ----. | 9 |
+| .- | A | | ----- | 0 |
+| -. | N | | ---.- | ESC |
+| -- | M | | --.-. | LBRC |
+| ... | S | | --.-- | RBRC |
+| ..- | U | | .-.-. | LCBR |
+| .-. | R | | .-.-- | RCBR |
+| .-- | W | | ..-.. | GRV |
+| -.. | D | | ..-.- | TILD |
+| -.- | K | | ...-. | TAB |
 | --. | G | | .....- | Hold shift for the next press |
 | --- | O | | ..--.. | QUES |
 | .... | H | | .-.... | Type # and reset keyboard |
@@ -99,17 +100,18 @@
 | -..- | X | | --.-.. | 🚠 |
 | -.-. | C | | ...-.. | 👀 |
 | -.-- | Y | | ...-.- | 😳 |
-| --.. | Z | | .-.-.- | DOT |
-| --.- | Q | | .----. | QUOT |
-| ---. | 🫡 | | -.-.-. | SCLN |
-| ---- | ENT | | -.-.-- | EXLM |
-| ..... | 5 | | -.--.- | RPRN |
-| ....- | 4 | | --..-- | COMM |
-| ...-- | 3 | | ---... | S(KC_SCLN) |
-| ..--- | 2 | | ....... | Set dit duration to 100ms |
-| .-... | AMPR | | ......- | Set dit duration to 50ms |
-| .--.. | Hold Windows/super key for the next press | | --....- | Switch to next unicode mode |
-| .---- | 1 | | --..... | Type current unicode input mode |
-| -.... | 6 | | ...---... | Toggle display of dots and dashes before resolving morse code |
-| -..-. | SLSH | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
-| -.-.- | Hold control for the next press | |  |  |
+| --.. | Z | | -..... | 👍 |
+| --.- | Q | | .-.-.- | DOT |
+| ---. | 🫡 | | .----. | QUOT |
+| ---- | ENT | | -.-.-. | SCLN |
+| ..... | 5 | | -.-.-- | EXLM |
+| ....- | 4 | | -.--.- | RPRN |
+| ...-- | 3 | | --..-- | COMM |
+| ..--- | 2 | | ---... | S(KC_SCLN) |
+| .-... | AMPR | | ....... | Set dit duration to 100ms |
+| .--.. | Hold Windows/super key for the next press | | ......- | Set dit duration to 50ms |
+| .---- | 1 | | --....- | Switch to next unicode mode |
+| -.... | 6 | | --..... | Type current unicode input mode |
+| -..-. | SLSH | | ...---... | Toggle display of dots and dashes before resolving morse code |
+| -.-.- | Hold control for the next press | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
+| -.--. | LPRN | |  |  |
