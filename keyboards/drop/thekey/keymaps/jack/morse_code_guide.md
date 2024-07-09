@@ -66,6 +66,7 @@
 |------|--------|-|------|--------|
 | ....... | Set dit duration to 100ms | | --....- | Switch to next unicode mode |
 | ......- | Set dit duration to 50ms | | --..... | Type current unicode input mode |
+| .....-- | Toggle locking the shift key | |  |  |
 
 # 9
 | code | action | | code | action |
@@ -110,8 +111,8 @@
 | ..--- | 2 | | ---... | S(KC_SCLN) |
 | .-... | AMPR | | ....... | Set dit duration to 100ms |
 | .--.. | Hold Windows/super key for the next press | | ......- | Set dit duration to 50ms |
-| .---- | 1 | | --....- | Switch to next unicode mode |
-| -.... | 6 | | --..... | Type current unicode input mode |
-| -..-. | SLSH | | ...---... | Toggle display of dots and dashes before resolving morse code |
-| -.-.- | Hold control for the next press | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
-| -.--. | LPRN | |  |  |
+| .---- | 1 | | .....-- | Toggle locking the shift key |
+| -.... | 6 | | --....- | Switch to next unicode mode |
+| -..-. | SLSH | | --..... | Type current unicode input mode |
+| -.-.- | Hold control for the next press | | ...---... | Toggle display of dots and dashes before resolving morse code |
+| -.--. | LPRN | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |

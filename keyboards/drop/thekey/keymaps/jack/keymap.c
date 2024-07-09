@@ -47,6 +47,7 @@ uint8_t  code_length = 0;
 uint16_t code = 0;
 bool visible = true;
 bool render = true;
+bool shift_lock = false;
 
 uint8_t modifiers = 0;
 
@@ -288,6 +289,9 @@ JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
 JAK_DO_OTHER(0b0000001, "Set dit duration to 50ms", \
         DIT_DURATION = 50;\
         );
+JAK_DO_OTHER(0b0000011, "Toggle locking the shift key", \
+        shift_lock = !shift_lock; \
+        );
 JAK_DO_OTHER(0b1100001, "Switch to next unicode mode", \
         unicode_input_mode_step();\
         );
@@ -379,10 +383,10 @@ void matrix_scan_user(void) {
                 BUT_RENDER(process_6);
                 break;
             case 7:
-                process_7();
+                BUT_RENDER(process_7);
                 break;
             case 9:
-                process_9();
+                BUT_RENDER(process_9);
                 break;
         }
 
@@ -402,6 +406,11 @@ void matrix_scan_user(void) {
                 unregister_code(KC_LSFT);
             }
             modifiers = 0;
+        }
+
+        // shift lock is like caps lock for just this keyboard and also does shift a lot
+        if (shift_lock) {
+            modifiers |= 0b1000;
         }
 
         timer_ended = 0;
