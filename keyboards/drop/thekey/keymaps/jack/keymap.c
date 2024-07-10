@@ -120,45 +120,55 @@ void process_##x(void) {\
         case bits:\
             send_unicode_string(character);\
             break
+#define JAK_TYPE_CAPSABLE(bits, keycode) \
+        case bits:\
+            if (shift_lock) { \
+                register_code(KC_LSFT); \
+            } \
+            tap_code16(keycode); \
+            if (shift_lock) { \
+                unregister_code(KC_LSFT); \
+            } \
+            break
 
 JAK_PROCESS_FUNCTION_OPEN(1);
-JAK_TYPE_KEY(0b0, KC_E);
-JAK_TYPE_KEY(0b1, KC_T);
+JAK_TYPE_CAPSABLE(0b0, KC_E);
+JAK_TYPE_CAPSABLE(0b1, KC_T);
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(2);
-JAK_TYPE_KEY(0b00, KC_I);
-JAK_TYPE_KEY(0b01, KC_A);
-JAK_TYPE_KEY(0b10, KC_N);
-JAK_TYPE_KEY(0b11, KC_M);
+JAK_TYPE_CAPSABLE(0b00, KC_I);
+JAK_TYPE_CAPSABLE(0b01, KC_A);
+JAK_TYPE_CAPSABLE(0b10, KC_N);
+JAK_TYPE_CAPSABLE(0b11, KC_M);
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(3);
-JAK_TYPE_KEY(0b000, KC_S);
-JAK_TYPE_KEY(0b001, KC_U);
-JAK_TYPE_KEY(0b010, KC_R);
-JAK_TYPE_KEY(0b011, KC_W);
-JAK_TYPE_KEY(0b100, KC_D);
-JAK_TYPE_KEY(0b101, KC_K);
-JAK_TYPE_KEY(0b110, KC_G);
-JAK_TYPE_KEY(0b111, KC_O);
+JAK_TYPE_CAPSABLE(0b000, KC_S);
+JAK_TYPE_CAPSABLE(0b001, KC_U);
+JAK_TYPE_CAPSABLE(0b010, KC_R);
+JAK_TYPE_CAPSABLE(0b011, KC_W);
+JAK_TYPE_CAPSABLE(0b100, KC_D);
+JAK_TYPE_CAPSABLE(0b101, KC_K);
+JAK_TYPE_CAPSABLE(0b110, KC_G);
+JAK_TYPE_CAPSABLE(0b111, KC_O);
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(4);
-JAK_TYPE_KEY(0b0000, KC_H);
-JAK_TYPE_KEY(0b0001, KC_V);
-JAK_TYPE_KEY(0b0010, KC_F);
+JAK_TYPE_CAPSABLE(0b0000, KC_H);
+JAK_TYPE_CAPSABLE(0b0001, KC_V);
+JAK_TYPE_CAPSABLE(0b0010, KC_F);
 JAK_TYPE_KEY(0b0011, KC_BSPC);
-JAK_TYPE_KEY(0b0100, KC_L);
+JAK_TYPE_CAPSABLE(0b0100, KC_L);
 JAK_TYPE_KEY(0b0101, KC_SPC);
-JAK_TYPE_KEY(0b0110, KC_P);
-JAK_TYPE_KEY(0b0111, KC_J);
-JAK_TYPE_KEY(0b1000, KC_B);
-JAK_TYPE_KEY(0b1001, KC_X);
-JAK_TYPE_KEY(0b1010, KC_C);
-JAK_TYPE_KEY(0b1011, KC_Y);
-JAK_TYPE_KEY(0b1100, KC_Z);
-JAK_TYPE_KEY(0b1101, KC_Q);
+JAK_TYPE_CAPSABLE(0b0110, KC_P);
+JAK_TYPE_CAPSABLE(0b0111, KC_J);
+JAK_TYPE_CAPSABLE(0b1000, KC_B);
+JAK_TYPE_CAPSABLE(0b1001, KC_X);
+JAK_TYPE_CAPSABLE(0b1010, KC_C);
+JAK_TYPE_CAPSABLE(0b1011, KC_Y);
+JAK_TYPE_CAPSABLE(0b1100, KC_Z);
+JAK_TYPE_CAPSABLE(0b1101, KC_Q);
 JAK_TYPE_UNICODE(0b1110, "🫡");
 JAK_TYPE_KEY(0b1111, KC_ENT);
 JAK_PROCESS_FUNCTION_CLOSE;
@@ -409,9 +419,9 @@ void matrix_scan_user(void) {
         }
 
         // shift lock is like caps lock for just this keyboard and also does shift a lot
-        if (shift_lock) {
-            modifiers |= 0b1000;
-        }
+        //if (shift_lock) {
+        //    modifiers |= 0b1000;
+        //}
 
         timer_ended = 0;
         code_length = 0;
