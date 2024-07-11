@@ -48,6 +48,8 @@ uint16_t code = 0;
 bool visible = true;
 bool render = true;
 bool shift_lock = false;
+bool fn_key = false;
+bool double_fn_key = false;
 
 uint8_t modifiers = 0;
 
@@ -99,6 +101,13 @@ void process_1(void) {
 }
  *
  */
+static uint16_t function_keys[] = {
+    KC_F10, KC_F1,  KC_F2,  KC_F3,  KC_F4, 
+    KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9, 
+    KC_F20, KC_F11, KC_F12, KC_F13, KC_F14,
+    KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, 
+};
+
 #define JAK_PROCESS_FUNCTION_OPEN(x) \
 void process_##x(void) {\
     switch (code) {\
@@ -112,6 +121,19 @@ void process_##x(void) {\
         case bits:\
             tap_code16(keycode);\
             break
+#define JAK_NUMBER_KEYCODE(num) KC_##num
+
+#define JAK_NUMBER_OR_FN(bits, number) \
+        case bits: \
+            if (fn_key) { \
+                tap_code16(function_keys[number]); \
+            } else if (double_fn_key) { \
+                tap_code16(function_keys[number+10]); \
+            } else { \
+                tap_code16(JAK_NUMBER_KEYCODE(number)); \
+            } \
+            break
+
 #define JAK_DO_OTHER(bits, explain, code) \
         case bits:\
             code\
@@ -183,25 +205,25 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b10111
 //0b11001
 JAK_PROCESS_FUNCTION_OPEN(5);
-JAK_TYPE_KEY(0b00000, KC_5);
-JAK_TYPE_KEY(0b00001, KC_4);
-JAK_TYPE_KEY(0b00011, KC_3);
-JAK_TYPE_KEY(0b00111, KC_2);
+JAK_NUMBER_OR_FN(0b00000, 5);
+JAK_NUMBER_OR_FN(0b00001, 4);
+JAK_NUMBER_OR_FN(0b00011, 3);
+JAK_NUMBER_OR_FN(0b00111, 2);
 JAK_TYPE_KEY(0b01000, KC_AMPR);
 JAK_DO_OTHER(0b01100, "Hold Windows/super key for the next press", \
     modifiers |= 0b0001; \
     );
-JAK_TYPE_KEY(0b01111, KC_1);
-JAK_TYPE_KEY(0b10000, KC_6);
+JAK_NUMBER_OR_FN(0b01111, 1);
+JAK_NUMBER_OR_FN(0b10000, 6);
 JAK_TYPE_KEY(0b10010, KC_SLSH);
 JAK_DO_OTHER(0b10101, "Hold control for the next press", \
     modifiers |= 0b0010; \
     );
 JAK_TYPE_KEY(0b10110, KC_LPRN);
-JAK_TYPE_KEY(0b11000, KC_7);
-JAK_TYPE_KEY(0b11100, KC_8);
-JAK_TYPE_KEY(0b11110, KC_9);
-JAK_TYPE_KEY(0b11111, KC_0);
+JAK_NUMBER_OR_FN(0b11000, 7);
+JAK_NUMBER_OR_FN(0b11100, 8);
+JAK_NUMBER_OR_FN(0b11110, 9);
+JAK_NUMBER_OR_FN(0b11111, 0);
 JAK_TYPE_KEY(0b11101, KC_ESC);
 JAK_TYPE_KEY(0b11010, KC_LBRC);
 JAK_TYPE_KEY(0b11011, KC_RBRC);
@@ -246,8 +268,6 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b101101
 //0b101110
 //0b101111
-//0b110000
-//0b110001
 //0b110010
 //0b110011
 //0b110101
@@ -290,6 +310,12 @@ JAK_TYPE_KEY(0b101011, KC_EXLM);
 JAK_TYPE_KEY(0b101101, KC_RPRN);
 JAK_TYPE_KEY(0b110011, KC_COMM);
 JAK_TYPE_KEY(0b111000, S(KC_SCLN));
+JAK_DO_OTHER(0b110000, "Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10)", \
+        modifiers |= 0b10000; \
+        );
+JAK_DO_OTHER(0b110001, "Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20)", \
+        modifiers |= 0b100000; \
+        );
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(7);
@@ -337,12 +363,6 @@ JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters th
         );
 JAK_PROCESS_FUNCTION_CLOSE;
 
-
-#undef JAK_PROCESS_FUNCTION_OPEN
-#undef JAK_PROCESS_FUNCTION_CLOSE
-#undef JAK_TYPE_KEY
-#undef JAK_DO_OTHER
-
 void matrix_scan_user(void) {
     if (timer_started == 0 && timer_ended != 0 && timer_elapsed(timer_ended) > DIT_DURATION * 3) {
         if (visible && render) {
@@ -355,17 +375,23 @@ void matrix_scan_user(void) {
 
         // handle modifiers (register)
         uint8_t old_modifiers = modifiers;
-        if ((modifiers & 0b0001) == 0b0001) {
+        if ((modifiers & 0b00001) == 0b00001) {
             register_code(KC_LGUI);
         }
-        if ((modifiers & 0b0010) == 0b0010) {
+        if ((modifiers & 0b00010) == 0b00010) {
             register_code(KC_LCTL);
         }
-        if ((modifiers & 0b0100) == 0b0100) {
+        if ((modifiers & 0b00100) == 0b00100) {
             register_code(KC_LALT);
         }
-        if ((modifiers & 0b1000) == 0b1000) {
+        if ((modifiers & 0b01000) == 0b01000) {
             register_code(KC_LSFT);
+        }
+        if ((modifiers & 0b10000) == 0b10000) {
+            fn_key = true;
+        }
+        if ((modifiers & 0b100000) == 0b100000) {
+            double_fn_key = true;
         }
 #define BUT_RENDER(x) do {\
     if (render) {\
@@ -393,29 +419,31 @@ void matrix_scan_user(void) {
                 BUT_RENDER(process_6);
                 break;
             case 7:
-                BUT_RENDER(process_7);
+                process_7();
                 break;
             case 9:
-                BUT_RENDER(process_9);
+                process_9();
                 break;
         }
 
 
         // handle modifiers (unregister). Unregister all modifiers if non modifier key is pressed
         if (old_modifiers == modifiers) {
-            if ((modifiers & 0b0001) == 0b0001) {
+            if ((modifiers & 0b00001) == 0b00001) {
                 unregister_code(KC_LGUI);
             }
-            if ((modifiers & 0b0010) == 0b0010) {
+            if ((modifiers & 0b00010) == 0b00010) {
                 unregister_code(KC_LCTL);
             }
-            if ((modifiers & 0b0100) == 0b0100) {
+            if ((modifiers & 0b00100) == 0b00100) {
                 unregister_code(KC_LALT);
             }
-            if ((modifiers & 0b1000) == 0b1000) {
+            if ((modifiers & 0b01000) == 0b01000) {
                 unregister_code(KC_LSFT);
             }
             modifiers = 0;
+            fn_key = false;
+            double_fn_key = false;
         }
 
         // shift lock is like caps lock for just this keyboard and also does shift a lot

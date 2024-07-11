@@ -17,6 +17,8 @@ UNICODE_RE = re.compile(
         )
 CAPSABLE_RE = re.compile(
         r"JAK_TYPE_CAPSABLE[(]0b(?P<bits>[01]+), *(?P<keycode>[()A-Z_0-9]+) *[)]")
+NUMBER_FN_RE = re.compile(
+        r"JAK_NUMBER_OR_FN[(]0b(?P<bits>[01]+), *(?P<number>[0-9]) *[)]")
 FUNCTION_END_RE = re.compile(
         r"JAK_PROCESS_FUNCTION_CLOSE")
 JUST_INNOCENT_KEYCODE = re.compile(
@@ -43,6 +45,7 @@ def main():
         end_match = FUNCTION_END_RE.match(line)
         unicode_match = UNICODE_RE.match(line)
         capsable_match = CAPSABLE_RE.match(line)
+        number_fn_match = NUMBER_FN_RE.match(line)
         if out_of_function:
             if start_match:
                 out_of_function = False
@@ -73,6 +76,16 @@ def main():
             if capsable_match:
                 g = capsable_match.groupdict()
                 content = g["keycode"]
+                innocent = JUST_INNOCENT_KEYCODE.match(content)
+                if innocent:
+                    content = innocent.groupdict()["etcetera"]
+            if number_fn_match:
+                g = number_fn_match.groupdict()
+                content = g["number"]
+                if content == "0":
+                    content = "0/fn(F10)/dubfn(F20)"
+                else:
+                    content = f"{content}/fn(F{content})/dubfn(F{int(content)+10})"
             bits = g["bits"]
             bits = bits.replace("1", "-")
             bits = bits.replace("0", ".")

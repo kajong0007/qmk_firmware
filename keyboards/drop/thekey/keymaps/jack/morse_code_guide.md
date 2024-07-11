@@ -2,64 +2,65 @@
 # 1
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| . | KC_E | | - | KC_T |
+| . | E | | - | T |
 
 # 2
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .. | KC_I | | -. | KC_N |
-| .- | KC_A | | -- | KC_M |
+| .. | I | | -. | N |
+| .- | A | | -- | M |
 
 # 3
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ... | KC_S | | -.. | KC_D |
-| ..- | KC_U | | -.- | KC_K |
-| .-. | KC_R | | --. | KC_G |
-| .-- | KC_W | | --- | KC_O |
+| ... | S | | -.. | D |
+| ..- | U | | -.- | K |
+| .-. | R | | --. | G |
+| .-- | W | | --- | O |
 
 # 4
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .... | KC_H | | -... | KC_B |
-| ...- | KC_V | | -..- | KC_X |
-| ..-. | KC_F | | -.-. | KC_C |
-| ..-- | BSPC | | -.-- | KC_Y |
-| .-.. | KC_L | | --.. | KC_Z |
-| .-.- | SPC | | --.- | KC_Q |
-| .--. | KC_P | | ---. | 🫡 |
-| .--- | KC_J | | ---- | ENT |
+| .... | H | | -... | B |
+| ...- | V | | -..- | X |
+| ..-. | F | | -.-. | C |
+| ..-- | BSPC | | -.-- | Y |
+| .-.. | L | | --.. | Z |
+| .-.- | SPC | | --.- | Q |
+| .--. | P | | ---. | 🫡 |
+| .--- | J | | ---- | ENT |
 
 # 5
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| ..... | 5 | | ---.. | 8 |
-| ....- | 4 | | ----. | 9 |
-| ...-- | 3 | | ----- | 0 |
-| ..--- | 2 | | ---.- | ESC |
+| ..... | 5/fn(F5)/dubfn(F15) | | ---.. | 8/fn(F8)/dubfn(F18) |
+| ....- | 4/fn(F4)/dubfn(F14) | | ----. | 9/fn(F9)/dubfn(F19) |
+| ...-- | 3/fn(F3)/dubfn(F13) | | ----- | 0/fn(F10)/dubfn(F20) |
+| ..--- | 2/fn(F2)/dubfn(F12) | | ---.- | ESC |
 | .-... | AMPR | | --.-. | LBRC |
 | .--.. | Hold Windows/super key for the next press | | --.-- | RBRC |
-| .---- | 1 | | .-.-. | LCBR |
-| -.... | 6 | | .-.-- | RCBR |
+| .---- | 1/fn(F1)/dubfn(F11) | | .-.-. | LCBR |
+| -.... | 6/fn(F6)/dubfn(F16) | | .-.-- | RCBR |
 | -..-. | SLSH | | ..-.. | GRV |
 | -.-.- | Hold control for the next press | | ..-.- | TILD |
 | -.--. | LPRN | | ...-. | TAB |
-| --... | 7 | |  |  |
+| --... | 7/fn(F7)/dubfn(F17) | |  |  |
 
 # 6
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .....- | Hold shift for the next press | | --.-.. | 🚠 |
-| ..--.. | QUES | | ...-.. | 👀 |
-| .-.... | Type # and reset keyboard | | ...-.- | 😳 |
-| .-..-. | DQT | | -..... | 👍 |
-| .-.-.. | Hold alt for the next press | | .-.-.- | DOT |
-| ....-. | MINS | | .----. | QUOT |
-| ...--. | 😎 | | -.-.-. | SCLN |
-| ...--- | 😏 | | -.-.-- | EXLM |
-| ....-- | ✨ | | -.--.- | RPRN |
-| ..-.-- | 🔥 | | --..-- | COMM |
-| ...... | 🗾 | | ---... | S(KC_SCLN) |
+| .....- | Hold shift for the next press | | ...-.. | 👀 |
+| ..--.. | QUES | | ...-.- | 😳 |
+| .-.... | Type # and reset keyboard | | -..... | 👍 |
+| .-..-. | DQT | | .-.-.- | DOT |
+| .-.-.. | Hold alt for the next press | | .----. | QUOT |
+| ....-. | MINS | | -.-.-. | SCLN |
+| ...--. | 😎 | | -.-.-- | EXLM |
+| ...--- | 😏 | | -.--.- | RPRN |
+| ....-- | ✨ | | --..-- | COMM |
+| ..-.-- | 🔥 | | ---... | S(KC_SCLN) |
+| ...... | 🗾 | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
+| --.-.. | 🚠 | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
 
 # 7
 | code | action | | code | action |
@@ -75,44 +76,45 @@
 
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| . | KC_E | | --... | 7 |
-| - | KC_T | | ---.. | 8 |
-| .. | KC_I | | ----. | 9 |
-| .- | KC_A | | ----- | 0 |
-| -. | KC_N | | ---.- | ESC |
-| -- | KC_M | | --.-. | LBRC |
-| ... | KC_S | | --.-- | RBRC |
-| ..- | KC_U | | .-.-. | LCBR |
-| .-. | KC_R | | .-.-- | RCBR |
-| .-- | KC_W | | ..-.. | GRV |
-| -.. | KC_D | | ..-.- | TILD |
-| -.- | KC_K | | ...-. | TAB |
-| --. | KC_G | | .....- | Hold shift for the next press |
-| --- | KC_O | | ..--.. | QUES |
-| .... | KC_H | | .-.... | Type # and reset keyboard |
-| ...- | KC_V | | .-..-. | DQT |
-| ..-. | KC_F | | .-.-.. | Hold alt for the next press |
-| ..-- | BSPC | | ....-. | MINS |
-| .-.. | KC_L | | ...--. | 😎 |
-| .-.- | SPC | | ...--- | 😏 |
-| .--. | KC_P | | ....-- | ✨ |
-| .--- | KC_J | | ..-.-- | 🔥 |
-| -... | KC_B | | ...... | 🗾 |
-| -..- | KC_X | | --.-.. | 🚠 |
-| -.-. | KC_C | | ...-.. | 👀 |
-| -.-- | KC_Y | | ...-.- | 😳 |
-| --.. | KC_Z | | -..... | 👍 |
-| --.- | KC_Q | | .-.-.- | DOT |
-| ---. | 🫡 | | .----. | QUOT |
-| ---- | ENT | | -.-.-. | SCLN |
-| ..... | 5 | | -.-.-- | EXLM |
-| ....- | 4 | | -.--.- | RPRN |
-| ...-- | 3 | | --..-- | COMM |
-| ..--- | 2 | | ---... | S(KC_SCLN) |
-| .-... | AMPR | | ....... | Set dit duration to 100ms |
-| .--.. | Hold Windows/super key for the next press | | ......- | Set dit duration to 50ms |
-| .---- | 1 | | .....-- | Toggle locking the shift key |
-| -.... | 6 | | --....- | Switch to next unicode mode |
-| -..-. | SLSH | | --..... | Type current unicode input mode |
-| -.-.- | Hold control for the next press | | ...---... | Toggle display of dots and dashes before resolving morse code |
-| -.--. | LPRN | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
+| . | E | | ---.. | 8/fn(F8)/dubfn(F18) |
+| - | T | | ----. | 9/fn(F9)/dubfn(F19) |
+| .. | I | | ----- | 0/fn(F10)/dubfn(F20) |
+| .- | A | | ---.- | ESC |
+| -. | N | | --.-. | LBRC |
+| -- | M | | --.-- | RBRC |
+| ... | S | | .-.-. | LCBR |
+| ..- | U | | .-.-- | RCBR |
+| .-. | R | | ..-.. | GRV |
+| .-- | W | | ..-.- | TILD |
+| -.. | D | | ...-. | TAB |
+| -.- | K | | .....- | Hold shift for the next press |
+| --. | G | | ..--.. | QUES |
+| --- | O | | .-.... | Type # and reset keyboard |
+| .... | H | | .-..-. | DQT |
+| ...- | V | | .-.-.. | Hold alt for the next press |
+| ..-. | F | | ....-. | MINS |
+| ..-- | BSPC | | ...--. | 😎 |
+| .-.. | L | | ...--- | 😏 |
+| .-.- | SPC | | ....-- | ✨ |
+| .--. | P | | ..-.-- | 🔥 |
+| .--- | J | | ...... | 🗾 |
+| -... | B | | --.-.. | 🚠 |
+| -..- | X | | ...-.. | 👀 |
+| -.-. | C | | ...-.- | 😳 |
+| -.-- | Y | | -..... | 👍 |
+| --.. | Z | | .-.-.- | DOT |
+| --.- | Q | | .----. | QUOT |
+| ---. | 🫡 | | -.-.-. | SCLN |
+| ---- | ENT | | -.-.-- | EXLM |
+| ..... | 5/fn(F5)/dubfn(F15) | | -.--.- | RPRN |
+| ....- | 4/fn(F4)/dubfn(F14) | | --..-- | COMM |
+| ...-- | 3/fn(F3)/dubfn(F13) | | ---... | S(KC_SCLN) |
+| ..--- | 2/fn(F2)/dubfn(F12) | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
+| .-... | AMPR | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
+| .--.. | Hold Windows/super key for the next press | | ....... | Set dit duration to 100ms |
+| .---- | 1/fn(F1)/dubfn(F11) | | ......- | Set dit duration to 50ms |
+| -.... | 6/fn(F6)/dubfn(F16) | | .....-- | Toggle locking the shift key |
+| -..-. | SLSH | | --....- | Switch to next unicode mode |
+| -.-.- | Hold control for the next press | | --..... | Type current unicode input mode |
+| -.--. | LPRN | | ...---... | Toggle display of dots and dashes before resolving morse code |
+| --... | 7/fn(F7)/dubfn(F17) | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
