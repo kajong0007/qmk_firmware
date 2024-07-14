@@ -43,6 +43,7 @@ uint16_t SHORT_GAP = DIT_DEFAULT * 3;
 
 uint16_t timer_started = 0;
 uint16_t timer_ended = 0;
+uint16_t auto_space_started = 0;
 uint8_t  code_length = 0;
 uint16_t code = 0;
 bool visible = true;
@@ -50,6 +51,7 @@ bool render = true;
 bool shift_lock = false;
 bool fn_key = false;
 bool double_fn_key = false;
+bool auto_space = false;
 
 uint8_t modifiers = 0;
 
@@ -60,6 +62,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 timer_started = timer_read();
                 timer_ended = 0;
+                auto_space_started = 0;
             } else {
                 timer_ended = timer_read();
                 code <<= 1;
@@ -367,9 +370,25 @@ JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters th
                 render = true; \
             } \
         );
+JAK_DO_OTHER(0b111000100, "Toggle auto typing space", \
+            if (auto_space) { \
+                auto_space_started = 0;
+                auto_space = false; \
+            } else { \
+                auto_space_started = 0;
+                auto_space = true; \
+            } \
+        );
+
 JAK_PROCESS_FUNCTION_CLOSE;
 
 void matrix_scan_user(void) {
+    if (auto_space && auto_space_started != 0) {
+        if (timer_elapsed(auto_space_started) > DIT_DURATION * 7) {
+            auto_space_started = 0;
+            tap_code16(KC_SPC);
+        }
+    }
     if (timer_started == 0 && timer_ended != 0 && timer_elapsed(timer_ended) > DIT_DURATION * 3) {
         if (visible && render) {
             int del_bits;
@@ -377,6 +396,9 @@ void matrix_scan_user(void) {
                 SEND_STRING(SS_TAP(X_BSPC) SS_DELAY(1));
             }
             SEND_STRING(SS_DELAY(5));
+            if (auto_space) {
+                auto_space_started = timer_read();
+            }
         }
 
         // handle modifiers (register)
