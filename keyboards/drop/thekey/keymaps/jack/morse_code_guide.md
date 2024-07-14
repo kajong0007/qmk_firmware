@@ -38,30 +38,32 @@
 | ...-- | 3/fn(F3)/dubfn(F13) | | ---.- | ESC |
 | ..--- | 2/fn(F2)/dubfn(F12) | | --.-. | LBRC |
 | .-... | AMPR | | --.-- | RBRC |
-| .--.. | Hold Windows/super key for the next press | | .-.-. | LCBR |
-| .---- | 1/fn(F1)/dubfn(F11) | | .-.-- | RCBR |
-| -.... | 6/fn(F6)/dubfn(F16) | | ..-.. | GRV |
-| -..-. | SLSH | | ..-.- | TILD |
-| -.-.- | Hold control for the next press | | ...-. | TAB |
-| -.--. | LPRN | | -...- | EQL |
-| --... | 7/fn(F7)/dubfn(F17) | | .--.- | RGB Toggle |
-| ---.. | 8/fn(F8)/dubfn(F18) | | .---. | RGB Next Mode |
+| .--.. | Hold Windows/super key for the next press | | ..-.. | GRV |
+| .---- | 1/fn(F1)/dubfn(F11) | | ..-.- | TILD |
+| -.... | 6/fn(F6)/dubfn(F16) | | ...-. | TAB |
+| -..-. | SLSH | | -...- | EQL |
+| -.-.- | Hold control for the next press | | .-.-. | PPLS |
+| -.--. | LPRN | | .--.- | RGB Toggle |
+| --... | 7/fn(F7)/dubfn(F17) | | .---. | RGB Next Mode |
+| ---.. | 8/fn(F8)/dubfn(F18) | |  |  |
 
 # 6
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| .....- | Hold shift for the next press | | ...-.. | 👀 |
+| .....- | Hold shift for the next press | | --.-.. | 🚠 |
+| .--.-. | AT | | ...-.. | 👀 |
 | ..--.. | QUES | | ...-.- | 😳 |
 | .-.... | Type # and reset keyboard | | -..... | 👍 |
 | .-..-. | DQT | | .-.-.- | DOT |
 | .-.-.. | Hold alt for the next press | | .----. | QUOT |
 | -....- | MINS | | -.-.-. | SCLN |
-| ...--. | 😎 | | -.-.-- | EXLM |
-| ...--- | 😏 | | -.--.- | RPRN |
-| ....-- | ✨ | | --..-- | COMM |
-| ..-.-- | 🔥 | | ---... | S(KC_SCLN) |
-| ...... | 🗾 | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
-| --.-.. | 🚠 | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
+| ---.-. | LCBR | | -.-.-- | EXLM |
+| ---.-- | RCBR | | -.--.- | RPRN |
+| ...--. | 😎 | | --..-- | COMM |
+| ...--- | 😏 | | ---... | S(KC_SCLN) |
+| ....-- | ✨ | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
+| ..-.-- | 🔥 | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
+| ...... | 🗾 | |  |  |
 
 # 7
 | code | action | | code | action |
@@ -78,47 +80,48 @@
 
 | code | action | | code | action |
 |------|--------|-|------|--------|
-| . | E | | ----- | 0/fn(F10)/dubfn(F20) |
-| - | T | | ---.- | ESC |
-| .. | I | | --.-. | LBRC |
-| .- | A | | --.-- | RBRC |
-| -. | N | | .-.-. | LCBR |
-| -- | M | | .-.-- | RCBR |
-| ... | S | | ..-.. | GRV |
-| ..- | U | | ..-.- | TILD |
-| .-. | R | | ...-. | TAB |
-| .-- | W | | -...- | EQL |
-| -.. | D | | .--.- | RGB Toggle |
-| -.- | K | | .---. | RGB Next Mode |
-| --. | G | | .....- | Hold shift for the next press |
-| --- | O | | ..--.. | QUES |
-| .... | H | | .-.... | Type # and reset keyboard |
-| ...- | V | | .-..-. | DQT |
-| ..-. | F | | .-.-.. | Hold alt for the next press |
-| ..-- | BSPC | | -....- | MINS |
-| .-.. | L | | ...--. | 😎 |
-| .-.- | SPC | | ...--- | 😏 |
-| .--. | P | | ....-- | ✨ |
-| .--- | J | | ..-.-- | 🔥 |
-| -... | B | | ...... | 🗾 |
-| -..- | X | | --.-.. | 🚠 |
-| -.-. | C | | ...-.. | 👀 |
-| -.-- | Y | | ...-.- | 😳 |
-| --.. | Z | | -..... | 👍 |
-| --.- | Q | | .-.-.- | DOT |
-| ---. | 🫡 | | .----. | QUOT |
-| ---- | ENT | | -.-.-. | SCLN |
-| ..... | 5/fn(F5)/dubfn(F15) | | -.-.-- | EXLM |
-| ....- | 4/fn(F4)/dubfn(F14) | | -.--.- | RPRN |
-| ...-- | 3/fn(F3)/dubfn(F13) | | --..-- | COMM |
-| ..--- | 2/fn(F2)/dubfn(F12) | | ---... | S(KC_SCLN) |
-| .-... | AMPR | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
-| .--.. | Hold Windows/super key for the next press | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
-| .---- | 1/fn(F1)/dubfn(F11) | | ....... | Set dit duration to 100ms |
-| -.... | 6/fn(F6)/dubfn(F16) | | ......- | Set dit duration to 50ms |
-| -..-. | SLSH | | .....-- | Toggle locking the shift key |
-| -.-.- | Hold control for the next press | | --....- | Switch to next unicode mode |
-| -.--. | LPRN | | --..... | Type current unicode input mode |
-| --... | 7/fn(F7)/dubfn(F17) | | ...---... | Toggle display of dots and dashes before resolving morse code |
-| ---.. | 8/fn(F8)/dubfn(F18) | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
-| ----. | 9/fn(F9)/dubfn(F19) | | ---...-.. | Toggle auto typing space |
+| . | E | | ---.- | ESC |
+| - | T | | --.-. | LBRC |
+| .. | I | | --.-- | RBRC |
+| .- | A | | ..-.. | GRV |
+| -. | N | | ..-.- | TILD |
+| -- | M | | ...-. | TAB |
+| ... | S | | -...- | EQL |
+| ..- | U | | .-.-. | PPLS |
+| .-. | R | | .--.- | RGB Toggle |
+| .-- | W | | .---. | RGB Next Mode |
+| -.. | D | | .....- | Hold shift for the next press |
+| -.- | K | | .--.-. | AT |
+| --. | G | | ..--.. | QUES |
+| --- | O | | .-.... | Type # and reset keyboard |
+| .... | H | | .-..-. | DQT |
+| ...- | V | | .-.-.. | Hold alt for the next press |
+| ..-. | F | | -....- | MINS |
+| ..-- | BSPC | | ---.-. | LCBR |
+| .-.. | L | | ---.-- | RCBR |
+| .-.- | SPC | | ...--. | 😎 |
+| .--. | P | | ...--- | 😏 |
+| .--- | J | | ....-- | ✨ |
+| -... | B | | ..-.-- | 🔥 |
+| -..- | X | | ...... | 🗾 |
+| -.-. | C | | --.-.. | 🚠 |
+| -.-- | Y | | ...-.. | 👀 |
+| --.. | Z | | ...-.- | 😳 |
+| --.- | Q | | -..... | 👍 |
+| ---. | 🫡 | | .-.-.- | DOT |
+| ---- | ENT | | .----. | QUOT |
+| ..... | 5/fn(F5)/dubfn(F15) | | -.-.-. | SCLN |
+| ....- | 4/fn(F4)/dubfn(F14) | | -.-.-- | EXLM |
+| ...-- | 3/fn(F3)/dubfn(F13) | | -.--.- | RPRN |
+| ..--- | 2/fn(F2)/dubfn(F12) | | --..-- | COMM |
+| .-... | AMPR | | ---... | S(KC_SCLN) |
+| .--.. | Hold Windows/super key for the next press | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
+| .---- | 1/fn(F1)/dubfn(F11) | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
+| -.... | 6/fn(F6)/dubfn(F16) | | ....... | Set dit duration to 100ms |
+| -..-. | SLSH | | ......- | Set dit duration to 50ms |
+| -.-.- | Hold control for the next press | | .....-- | Toggle locking the shift key |
+| -.--. | LPRN | | --....- | Switch to next unicode mode |
+| --... | 7/fn(F7)/dubfn(F17) | | --..... | Type current unicode input mode |
+| ---.. | 8/fn(F8)/dubfn(F18) | | ...---... | Toggle display of dots and dashes before resolving morse code |
+| ----. | 9/fn(F9)/dubfn(F19) | | ---...--- | Toggle turning dots and dashes into the characters they represent in morse code |
+| ----- | 0/fn(F10)/dubfn(F20) | | ---...-.. | Toggle auto typing space |
