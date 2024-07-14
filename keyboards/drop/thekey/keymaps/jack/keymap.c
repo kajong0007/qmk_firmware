@@ -232,7 +232,7 @@ JAK_TYPE_KEY(0b00101, KC_TILD);
 JAK_TYPE_KEY(0b00010, KC_TAB);
 JAK_TYPE_KEY(0b10001, KC_EQL);
 JAK_TYPE_KEY(0b01010, KC_PPLS);
-#ifdef RGBLIGHT_LAYERS
+#ifdef RGBLIGHT_ENABLE
 JAK_DO_OTHER(0b01101, "RGB Toggle", \
         rgblight_toggle(); \
         );
@@ -278,8 +278,6 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b110010
 //0b110011
 //0b110101
-//0b110110
-//0b110111
 //0b111001
 //0b111100
 //0b111101
@@ -324,6 +322,14 @@ JAK_DO_OTHER(0b110000, "Hold function key on next keypress (turn 1-9 to F1-9 and
 JAK_DO_OTHER(0b110001, "Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20)", \
         modifiers |= 0b100000; \
         );
+#ifdef RGBLIGHT_ENABLE
+JAK_DO_OTHER(0b110110, "RGB effect increase speed", \
+        rgblight_increase_speed(); \
+        );
+JAK_DO_OTHER(0b110111, "RGB effect decrease speed", \
+        rgblight_decrease_speed(); \
+        );
+#endif
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(7);
