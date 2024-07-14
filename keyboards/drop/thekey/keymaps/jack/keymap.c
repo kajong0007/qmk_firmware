@@ -232,10 +232,10 @@ JAK_TYPE_KEY(0b00101, KC_TILD);
 JAK_TYPE_KEY(0b00010, KC_TAB);
 #ifdef RGBLIGHT_LAYERS
 JAK_DO_OTHER(0b01101, "RGB Toggle", \
-        tap_code16(RGB_TOG); \
+        rgblight_toggle(); \
         );
 JAK_DO_OTHER(0b01110, "RGB Next Mode", \
-        tap_code16(RGB_MOD); \
+        rgblight_step(); \
         );
 #endif
 JAK_PROCESS_FUNCTION_CLOSE;
