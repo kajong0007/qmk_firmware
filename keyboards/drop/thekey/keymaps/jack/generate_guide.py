@@ -8,7 +8,7 @@ import sys
 FUNCTION_START_RE = re.compile(
         r"JAK_PROCESS_FUNCTION_OPEN[(](?P<number>[0-9]+)[)].*")
 TYPE_RE = re.compile(
-        r"JAK_TYPE_KEY[(]0b(?P<bits>[01]+), *(?P<keycode>[()A-Z_0-9]+) *[)]")
+        r"JAK_TYPE_KEY[(]0b(?P<bits>[01]+), *(?P<keycode>[()A-Z_0-9]+) *.*[)]")
 OTHER_STUFF_RE = re.compile(
         r'JAK_DO_OTHER[(]0b(?P<bits>[01]+), *"(?P<explanation>[^"]*)".*'
         )
@@ -22,7 +22,7 @@ NUMBER_FN_RE = re.compile(
 FUNCTION_END_RE = re.compile(
         r"JAK_PROCESS_FUNCTION_CLOSE")
 JUST_INNOCENT_KEYCODE = re.compile(
-        r"KC_(?P<etcetera>.*)")
+        r"KC_(?P<etcetera>[A-Z0-9()_]+)")
 
 def main():
     cur_dir = pathlib.Path(__file__)
@@ -39,13 +39,13 @@ def main():
     cur_list = None
     all_list = []
     for line in keybind_lines:
-        start_match = FUNCTION_START_RE.match(line)
-        type_match = TYPE_RE.match(line)
-        other_match = OTHER_STUFF_RE.match(line)
-        end_match = FUNCTION_END_RE.match(line)
-        unicode_match = UNICODE_RE.match(line)
-        capsable_match = CAPSABLE_RE.match(line)
-        number_fn_match = NUMBER_FN_RE.match(line)
+        start_match = FUNCTION_START_RE.search(line)
+        type_match = TYPE_RE.search(line)
+        other_match = OTHER_STUFF_RE.search(line)
+        end_match = FUNCTION_END_RE.search(line)
+        unicode_match = UNICODE_RE.search(line)
+        capsable_match = CAPSABLE_RE.search(line)
+        number_fn_match = NUMBER_FN_RE.search(line)
         if out_of_function:
             if start_match:
                 out_of_function = False
@@ -64,7 +64,7 @@ def main():
             if type_match:
                 g = type_match.groupdict()
                 content = g["keycode"]
-                innocent = JUST_INNOCENT_KEYCODE.match(content)
+                innocent = JUST_INNOCENT_KEYCODE.search(content)
                 if innocent:
                     content = innocent.groupdict()["etcetera"]
             if other_match:
@@ -76,7 +76,7 @@ def main():
             if capsable_match:
                 g = capsable_match.groupdict()
                 content = g["keycode"]
-                innocent = JUST_INNOCENT_KEYCODE.match(content)
+                innocent = JUST_INNOCENT_KEYCODE.search(content)
                 if innocent:
                     content = innocent.groupdict()["etcetera"]
             if number_fn_match:

@@ -59,7 +59,7 @@
 | -....- | MINS | | -.-.-- | EXLM |
 | ---.-. | LCBR | | -.--.- | RPRN |
 | ---.-- | RCBR | | --..-- | COMM |
-| ...--. | 😎 | | ---... | S(KC_SCLN) |
+| ...--. | 😎 | | ---... | S(KC\_SCLN) |
 | ...--- | 😏 | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
 | ....-- | ✨ | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
 | ..-.-- | 🔥 | | --.--. | RGB effect increase speed |
@@ -114,7 +114,7 @@
 | ..... | 5/fn(F5)/dubfn(F15) | | -.-.-- | EXLM |
 | ....- | 4/fn(F4)/dubfn(F14) | | -.--.- | RPRN |
 | ...-- | 3/fn(F3)/dubfn(F13) | | --..-- | COMM |
-| ..--- | 2/fn(F2)/dubfn(F12) | | ---... | S(KC_SCLN) |
+| ..--- | 2/fn(F2)/dubfn(F12) | | ---... | S(KC\_SCLN) |
 | .-... | AMPR | | --.... | Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10) |
 | .--.. | Hold Windows/super key for the next press | | --...- | Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20) |
 | .---- | 1/fn(F1)/dubfn(F11) | | --.--. | RGB effect increase speed |
