@@ -44,7 +44,7 @@ uint16_t SHORT_GAP = DIT_DEFAULT * 3;
 uint16_t timer_started = 0;
 uint16_t timer_ended = 0;
 uint16_t auto_space_started = 0;
-bool auto_space_disable_once = false;
+bool auto_space_enable_once = false;
 uint8_t  code_length = 0;
 uint16_t code = 0;
 bool visible = true;
@@ -146,7 +146,11 @@ void process_##x(void) {\
     }\
 }\
 //
-#define JAK_AUTO_SPACE_DISABLE auto_space_disable_once = true
+#define JAK_AUTO_SPACE_ENABLE \
+    if (auto_space) { \
+        auto_space_enable_once = true; \
+    } \
+    //
 #define JAK_TYPE_KEY(bits, keycode, extra_code) \
         case bits:\
             tap_code16(keycode);\
@@ -162,13 +166,15 @@ void process_##x(void) {\
                 tap_code16(function_keys[number+10]); \
             } else { \
                 tap_code16(JAK_NUMBER_KEYCODE(number)); \
+                if (auto_space) { \
+                    auto_space_enable_once = true; \
+                } \
             } \
             break
 
 #define JAK_DO_OTHER(bits, explain, code) \
         case bits:\
             code\
-            auto_space_disable_once = true; \
             break
 #define JAK_TYPE_UNICODE(bits, character) \
         case bits:\
@@ -182,6 +188,9 @@ void process_##x(void) {\
             tap_code16(keycode); \
             if (shift_lock) { \
                 unregister_code(KC_LSFT); \
+            } \
+            if (auto_space) { \
+                auto_space_enable_once = true; \
             } \
             break
 
@@ -212,9 +221,9 @@ JAK_PROCESS_FUNCTION_OPEN(4);
 JAK_TYPE_CAPSABLE(0b0000, KC_H);
 JAK_TYPE_CAPSABLE(0b0001, KC_V);
 JAK_TYPE_CAPSABLE(0b0010, KC_F);
-JAK_TYPE_KEY(0b0011, KC_BSPC, JAK_AUTO_SPACE_DISABLE);
+JAK_TYPE_KEY(0b0011, KC_BSPC,);
 JAK_TYPE_CAPSABLE(0b0100, KC_L);
-JAK_TYPE_KEY(0b0101, KC_SPC, JAK_AUTO_SPACE_DISABLE);
+JAK_TYPE_KEY(0b0101, KC_SPC,);
 JAK_TYPE_CAPSABLE(0b0110, KC_P);
 JAK_TYPE_CAPSABLE(0b0111, KC_J);
 JAK_TYPE_CAPSABLE(0b1000, KC_B);
@@ -224,7 +233,7 @@ JAK_TYPE_CAPSABLE(0b1011, KC_Y);
 JAK_TYPE_CAPSABLE(0b1100, KC_Z);
 JAK_TYPE_CAPSABLE(0b1101, KC_Q);
 JAK_TYPE_UNICODE(0b1110, "🫡");
-JAK_TYPE_KEY(0b1111, KC_ENT, JAK_AUTO_SPACE_DISABLE);
+JAK_TYPE_KEY(0b1111, KC_ENT,);
 JAK_PROCESS_FUNCTION_CLOSE;
 
 //0b00110
@@ -238,29 +247,29 @@ JAK_NUMBER_OR_FN(0b00000, 5);
 JAK_NUMBER_OR_FN(0b00001, 4);
 JAK_NUMBER_OR_FN(0b00011, 3);
 JAK_NUMBER_OR_FN(0b00111, 2);
-JAK_TYPE_KEY(0b01000, KC_AMPR,);
+JAK_TYPE_KEY(0b01000, KC_AMPR, JAK_AUTO_SPACE_ENABLE);
 JAK_DO_OTHER(0b01100, "Hold Windows/super key for the next press", \
     modifiers |= 0b0001; \
     );
 JAK_NUMBER_OR_FN(0b01111, 1);
 JAK_NUMBER_OR_FN(0b10000, 6);
-JAK_TYPE_KEY(0b10010, KC_SLSH,);
+JAK_TYPE_KEY(0b10010, KC_SLSH, JAK_AUTO_SPACE_ENABLE);
 JAK_DO_OTHER(0b10101, "Hold control for the next press", \
     modifiers |= 0b0010; \
     );
-JAK_TYPE_KEY(0b10110, KC_LPRN,);
+JAK_TYPE_KEY(0b10110, KC_LPRN, JAK_AUTO_SPACE_ENABLE);
 JAK_NUMBER_OR_FN(0b11000, 7);
 JAK_NUMBER_OR_FN(0b11100, 8);
 JAK_NUMBER_OR_FN(0b11110, 9);
 JAK_NUMBER_OR_FN(0b11111, 0);
-JAK_TYPE_KEY(0b11101, KC_ESC, JAK_AUTO_SPACE_DISABLE);
-JAK_TYPE_KEY(0b11010, KC_LBRC,);
-JAK_TYPE_KEY(0b11011, KC_RBRC,);
-JAK_TYPE_KEY(0b00100, KC_GRV,);
-JAK_TYPE_KEY(0b00101, KC_TILD,);
-JAK_TYPE_KEY(0b00010, KC_TAB, JAK_AUTO_SPACE_DISABLE);
-JAK_TYPE_KEY(0b10001, KC_EQL,);
-JAK_TYPE_KEY(0b01010, KC_PPLS,);
+JAK_TYPE_KEY(0b11101, KC_ESC,);
+JAK_TYPE_KEY(0b11010, KC_LBRC, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b11011, KC_RBRC, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b00100, KC_GRV, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b00101, KC_TILD, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b00010, KC_TAB,);
+JAK_TYPE_KEY(0b10001, KC_EQL, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b01010, KC_PPLS, JAK_AUTO_SPACE_ENABLE);
 #ifdef RGBLIGHT_ENABLE
 JAK_DO_OTHER(0b01101, "RGB Toggle", \
         rgblight_toggle(); \
@@ -316,19 +325,19 @@ JAK_PROCESS_FUNCTION_OPEN(6);
 JAK_DO_OTHER(0b000001, "Hold shift for the next press", \
     modifiers |= 0b1000; \
     );
-JAK_TYPE_KEY(0b011010, KC_AT,);
-JAK_TYPE_KEY(0b001100, KC_QUES,);
+JAK_TYPE_KEY(0b011010, KC_AT, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b001100, KC_QUES, JAK_AUTO_SPACE_ENABLE);
 JAK_DO_OTHER(0b010000, "Type # and reset keyboard", \
     tap_code16(KC_HASH); \
     reset_keyboard(); \
     );
-JAK_TYPE_KEY(0b010010, KC_DQT,);
+JAK_TYPE_KEY(0b010010, KC_DQT, JAK_AUTO_SPACE_ENABLE);
 JAK_DO_OTHER(0b010100, "Hold alt for the next press", \
     modifiers |= 0b0100; \
     );
-JAK_TYPE_KEY(0b100001, KC_MINS,);
-JAK_TYPE_KEY(0b111010, KC_LCBR,);
-JAK_TYPE_KEY(0b111011, KC_RCBR,);
+JAK_TYPE_KEY(0b100001, KC_MINS, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b111010, KC_LCBR, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b111011, KC_RCBR, JAK_AUTO_SPACE_ENABLE);
 JAK_TYPE_UNICODE(0b000110, "😎");
 JAK_TYPE_UNICODE(0b000111, "😏");
 JAK_TYPE_UNICODE(0b000011, "✨");
@@ -338,13 +347,13 @@ JAK_TYPE_UNICODE(0b110100, "🚠");
 JAK_TYPE_UNICODE(0b000100, "👀");
 JAK_TYPE_UNICODE(0b000101, "😳");
 JAK_TYPE_UNICODE(0b100000, "👍");
-JAK_TYPE_KEY(0b010101, KC_DOT,);
-JAK_TYPE_KEY(0b011110, KC_QUOT,);
-JAK_TYPE_KEY(0b101010, KC_SCLN,);
-JAK_TYPE_KEY(0b101011, KC_EXLM,);
-JAK_TYPE_KEY(0b101101, KC_RPRN,);
-JAK_TYPE_KEY(0b110011, KC_COMM,);
-JAK_TYPE_KEY(0b111000, S(KC_SCLN),);
+JAK_TYPE_KEY(0b010101, KC_DOT, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b011110, KC_QUOT, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b101010, KC_SCLN, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b101011, KC_EXLM, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b101101, KC_RPRN, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b110011, KC_COMM, JAK_AUTO_SPACE_ENABLE);
+JAK_TYPE_KEY(0b111000, S(KC_SCLN), JAK_AUTO_SPACE_ENABLE);
 JAK_DO_OTHER(0b110000, "Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10)", \
         modifiers |= 0b10000; \
         );
@@ -407,12 +416,11 @@ JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters th
 
 JAK_DO_OTHER(0b111000100, "Toggle auto typing space", \
             if (auto_space) { \
-                auto_space_disable_once = false; \
-                auto_space_started = 0;
+                auto_space_enable_once = false; \
+                auto_space_started = 0; \
                 auto_space = false; \
             } else { \
-                auto_space_disable_once = false; \
-                auto_space_started = 0;
+                auto_space_started = 0; \
                 auto_space = true; \
             } \
         );
@@ -427,9 +435,8 @@ void matrix_scan_user(void) {
     if (auto_space && auto_space_started != 0) {
         if (timer_elapsed(auto_space_started) > DIT_DURATION * 7) {
             auto_space_started = 0;
-            if (auto_space_disable_once) {
-                auto_space_disable_once = false;
-            } else {
+            if (auto_space_enable_once) {
+                auto_space_enable_once = false;
                 tap_code16(KC_SPC);
             }
         }
