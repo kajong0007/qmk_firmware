@@ -248,13 +248,13 @@ JAK_NUMBER_OR_FN(0b00001, 4);
 JAK_NUMBER_OR_FN(0b00011, 3);
 JAK_NUMBER_OR_FN(0b00111, 2);
 JAK_TYPE_KEY(0b01000, KC_AMPR, JAK_AUTO_SPACE_ENABLE);
-JAK_DO_OTHER(0b01100, "Hold Windows/super key for the next press", \
+JAK_DO_OTHER(0b01100, "Hold Windows/super", \
     modifiers |= 0b0001; \
     );
 JAK_NUMBER_OR_FN(0b01111, 1);
 JAK_NUMBER_OR_FN(0b10000, 6);
 JAK_TYPE_KEY(0b10010, KC_SLSH, JAK_AUTO_SPACE_ENABLE);
-JAK_DO_OTHER(0b10101, "Hold control for the next press", \
+JAK_DO_OTHER(0b10101, "Hold control", \
     modifiers |= 0b0010; \
     );
 JAK_TYPE_KEY(0b10110, KC_LPRN, JAK_AUTO_SPACE_ENABLE);
@@ -300,8 +300,6 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b011101
 //0b011111
 //0b100001
-//0b100010
-//0b100011
 //0b100100
 //0b100101
 //0b100110
@@ -322,17 +320,17 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b111110
 //0b111111
 JAK_PROCESS_FUNCTION_OPEN(6);
-JAK_DO_OTHER(0b000001, "Hold shift for the next press", \
+JAK_DO_OTHER(0b000001, "Hold shift", \
     modifiers |= 0b1000; \
     );
 JAK_TYPE_KEY(0b011010, KC_AT, JAK_AUTO_SPACE_ENABLE);
 JAK_TYPE_KEY(0b001100, KC_QUES, JAK_AUTO_SPACE_ENABLE);
-JAK_DO_OTHER(0b010000, "Type # and reset keyboard", \
+JAK_DO_OTHER(0b010000, "Type # and reset", \
     tap_code16(KC_HASH); \
     reset_keyboard(); \
     );
 JAK_TYPE_KEY(0b010010, KC_DQT, JAK_AUTO_SPACE_ENABLE);
-JAK_DO_OTHER(0b010100, "Hold alt for the next press", \
+JAK_DO_OTHER(0b010100, "Hold alt", \
     modifiers |= 0b0100; \
     );
 JAK_TYPE_KEY(0b100001, KC_MINS, JAK_AUTO_SPACE_ENABLE);
@@ -353,37 +351,43 @@ JAK_TYPE_KEY(0b101010, KC_SCLN, JAK_AUTO_SPACE_ENABLE);
 JAK_TYPE_KEY(0b101011, KC_EXLM, JAK_AUTO_SPACE_ENABLE);
 JAK_TYPE_KEY(0b101101, KC_RPRN, JAK_AUTO_SPACE_ENABLE);
 JAK_TYPE_KEY(0b110011, KC_COMM, JAK_AUTO_SPACE_ENABLE);
-JAK_TYPE_KEY(0b111000, S(KC_SCLN), JAK_AUTO_SPACE_ENABLE);
-JAK_DO_OTHER(0b110000, "Hold function key on next keypress (turn 1-9 to F1-9 and 0 to F10)", \
+JAK_TYPE_KEY(0b111000, KC_COLN, JAK_AUTO_SPACE_ENABLE);
+JAK_DO_OTHER(0b110000, "Hold fn key", \
         modifiers |= 0b10000; \
         );
-JAK_DO_OTHER(0b110001, "Hold double-function key on next keypress (turn 1-9 to F11-19 and 0 to F20)", \
+JAK_DO_OTHER(0b110001, "Hold 2fn key", \
         modifiers |= 0b100000; \
         );
 #ifdef RGBLIGHT_ENABLE
-JAK_DO_OTHER(0b110110, "RGB effect increase speed", \
+JAK_DO_OTHER(0b110110, "RGB speed+", \
         rgblight_increase_speed(); \
         );
-JAK_DO_OTHER(0b110111, "RGB effect decrease speed", \
+JAK_DO_OTHER(0b110111, "RGB speed-", \
         rgblight_decrease_speed(); \
+        );
+JAK_DO_OTHER(0b100010, "RGB brightness-", \
+        rgblight_decrease_val(); \
+        );
+JAK_DO_OTHER(0b100011, "RGB brightness+", \
+        rgblight_increase_val(); \
         );
 #endif
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(7);
-JAK_DO_OTHER(0b0000000, "Set dit duration to 100ms", \
+JAK_DO_OTHER(0b0000000, "Set dit to 100ms", \
         DIT_DURATION = 100;\
         );
-JAK_DO_OTHER(0b0000001, "Set dit duration to 50ms", \
+JAK_DO_OTHER(0b0000001, "Set dit to 50ms", \
         DIT_DURATION = 50;\
         );
-JAK_DO_OTHER(0b0000011, "Toggle locking the shift key", \
+JAK_DO_OTHER(0b0000011, "Toggle shift lock", \
         shift_lock = !shift_lock; \
         );
-JAK_DO_OTHER(0b1100001, "Switch to next unicode mode", \
+JAK_DO_OTHER(0b1100001, "Next unicode mode", \
         unicode_input_mode_step();\
         );
-JAK_DO_OTHER(0b1100000, "Type current unicode input mode", \
+JAK_DO_OTHER(0b1100000, "Type unicode mode", \
         switch(get_unicode_input_mode()) { \
             case UNICODE_MODE_MACOS: \
                 SEND_STRING("MacOS"); \
@@ -399,14 +403,14 @@ JAK_DO_OTHER(0b1100000, "Type current unicode input mode", \
 JAK_PROCESS_FUNCTION_CLOSE;
 
 JAK_PROCESS_FUNCTION_OPEN(9);
-JAK_DO_OTHER(0b000111000, "Toggle display of dots and dashes before resolving morse code", \
+JAK_DO_OTHER(0b000111000, "Toggle visible dits/dahs", \
             if (visible) { \
                 visible = false; \
             } else { \
                 visible = true; \
             } \
         );
-JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters they represent in morse code", \
+JAK_DO_OTHER(0b111000111, "Toggle making letters", \
             if (render) { \
                 render = false; \
             } else { \
@@ -414,7 +418,7 @@ JAK_DO_OTHER(0b111000111, "Toggle turning dots and dashes into the characters th
             } \
         );
 
-JAK_DO_OTHER(0b111000100, "Toggle auto typing space", \
+JAK_DO_OTHER(0b111000100, "Toggle auto space", \
             if (auto_space) { \
                 auto_space_enable_once = false; \
                 auto_space_started = 0; \

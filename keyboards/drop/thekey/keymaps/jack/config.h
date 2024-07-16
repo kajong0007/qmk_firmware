@@ -11,3 +11,6 @@
 // these are good
 //#undef RGBLIGHT_EFFECT_RAINBOW_MOOD
 //#undef RGBLIGHT_EFFECT_RAINBOW_SWIRL
+
+// default is 17 and that is too slow
+#define RGBLIGHT_VAL_STEP 34
