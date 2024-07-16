@@ -25,6 +25,15 @@ FUNCTION_END_RE = re.compile(
 JUST_INNOCENT_KEYCODE = re.compile(
         r"KC_(?P<etcetera>[A-Z0-9()_]+)")
 
+def normalize_array_len(arr, l, empty_entry):
+    remainder = len(arr) % l
+    if remainder == 0:
+        return arr
+    add = l - remainder
+    for _ in range(add):
+        arr.append(empty_entry)
+    return arr
+
 def main():
     cur_dir = pathlib.Path(__file__)
     cur_dir = cur_dir.absolute().parent
@@ -110,9 +119,7 @@ def main():
         print("| code | action | | code | action | | code | action |")
         print("|------|--------|-|------|--------|-|------|--------|")
         actions = by_length[idx]
-        missing = 3 - (len(actions) % 3)
-        for _ in range(missing):
-            actions.append(('', ''))
+        actions = normalize_array_len(actions, 3, ('', ''))
         actions = sorted(actions, key=functools.cmp_to_key(lambda x,y: x[0] < y[0]))
         for adx in range(0, len(actions)//3):
             a0, c0 = actions[adx]
@@ -120,17 +127,16 @@ def main():
             a2, c2 = actions[adx + (2*(len(actions)//3))]
             print(f"| {c0} | {a0} | | {c1} | {a1} | | {c2} | {a2} |")
         print()
-    missing = 3 - (len(sorted_by_content) % 3)
-    for _ in range(missing):
-        sorted_by_content.append( ("","") )
+    sorted_by_content = normalize_array_len(sorted_by_content, 3, ("",""))
 
+    # The alphabet looks good with 3 columns with 3 empty at the end
     the_alphabet = [
             i for i in string.ascii_uppercase
     ] + ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     the_alphabet = [(morse_code_map[i[0]], i) for i in the_alphabet]
-    missing = 3 - (len(the_alphabet) % 3)
-    for _ in range(missing):
-        the_alphabet.append(("",""))
+    the_alphabet.append( ("","") )
+    the_alphabet.append( ("","") )
+    the_alphabet.append( ("","") )
 
     print("## The Alphabet and Numbers")
     print("| code | action | | code | action | | code | action |")

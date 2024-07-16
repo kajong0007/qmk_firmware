@@ -65,8 +65,7 @@
 ### 9
 | code | action | | code | action | | code | action |
 |------|--------|-|------|--------|-|------|--------|
-| ...---... | Toggle visible dits/dahs | | ---...-.. | Toggle auto space | |  |  |
-| ---...--- | Toggle making letters | |  |  | |  |  |
+| ...---... | Toggle visible dits/dahs | | ---...--- | Toggle making letters | | ---...-.. | Toggle auto space |
 
 ## The Alphabet and Numbers
 | code | action | | code | action | | code | action |
