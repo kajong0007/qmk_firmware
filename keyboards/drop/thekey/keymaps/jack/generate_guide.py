@@ -25,6 +25,37 @@ FUNCTION_END_RE = re.compile(
 JUST_INNOCENT_KEYCODE = re.compile(
         r"KC_(?P<etcetera>[A-Z0-9()_]+)")
 
+QMK_TO_HUMAN = {
+    "SLSH": "/",
+    "LPRN": "(",
+    "RPRN": ")",
+    "ESC": "Escape",
+    "LBRC": "[",
+    "RBRC": "]",
+    "GRV": "`",
+    "TILD": "~",
+    "TAB": "Tab",
+    "EQL": "=",
+    "PPLS": "+",
+    "COMM": ",",
+    "AT": "@",
+    "QUES": "?",
+    "DQT": '"',
+    "MINS": "-",
+    "LCBR": "{",
+    "RCBR": "}",
+    "DOT": ".",
+    "QUOT": "'",
+    "SCLN": ";",
+    "EXLM": "!",
+    "COLN": ":",
+    "BSPC": "Backspace",
+    "SPC": "Space",
+    "ENT": "Enter",
+    "AMPR": "&",
+}
+# Missing: #, $, %, *, ^, <, >, \, |
+
 def normalize_array_len(arr, l, empty_entry):
     remainder = len(arr) % l
     if remainder == 0:
@@ -57,6 +88,7 @@ def main():
         unicode_match = UNICODE_RE.search(line)
         capsable_match = CAPSABLE_RE.search(line)
         number_fn_match = NUMBER_FN_RE.search(line)
+        better_name = None
         if out_of_function:
             if start_match:
                 out_of_function = False
@@ -102,6 +134,7 @@ def main():
             bits = g["bits"]
             bits = bits.replace("1", "-")
             bits = bits.replace("0", ".")
+            content = QMK_TO_HUMAN.get(content, content)
             info = (content, bits)
             cur_list.append(info)
             all_list.append(info)
@@ -147,6 +180,17 @@ def main():
         c2, a2 = the_alphabet[idx + 2*len(the_alphabet)//3]
         print(f"|{c0}|{a0}||{c1}|{a1}||{c2}|{a2}|")
     print()
+
+    symbols = [(morse_code_map[i], i) for _, i in QMK_TO_HUMAN.items()]
+    symbols = normalize_array_len(symbols, 3, ("", ""))
+    print("## Symbols and Special Keys")
+    print("| code | action | | code | action | | code | action |")
+    print("|------|--------|-|------|--------|-|------|--------|")
+    for idx in range(0, len(symbols)//3):
+        c0, a0 = symbols[idx]
+        c1, a1 = symbols[idx + len(symbols)//3]
+        c2, a2 = symbols[idx + 2*len(symbols)//3]
+        print(f"|{c0}|{a0}||{c1}|{a1}||{c2}|{a2}|")
 
 
     print("## A Big ol' Table of all the Codes")
