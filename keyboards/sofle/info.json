@@ -8,9 +8,6 @@
         "encoder": true,
         "oled": true
     },
-    "build": {
-        "lto": true
-    },
     "usb": {
         "vid": "0xFC32"
     },
@@ -28,7 +25,6 @@
         }
     },
     "ws2812": {
-        "pin": "D3"
     },
     "rgblight": {
         "led_count": 72,

@@ -45,7 +45,7 @@
 #define RGBLIGHT_LAYERS
 
 /* ws2812 RGB LED */
-#define WS2812_DI_PIN D3
+#define WS2812_DI_PIN 0
 
 
 #ifdef RGB_MATRIX_ENABLE
@@ -68,9 +68,10 @@
 	//#define RGBLIGHT_EFFECT_ALTERNATING
 	//#define RGBLIGHT_EFFECT_TWINKLE
 
-    #define RGBLIGHT_LED_COUNT 70
+    //#define WS2812_DI_PIN D0
+    #define RGBLIGHT_LED_COUNT 72
 	//#define RGBLED_SPLIT
-	#define RGBLED_SPLIT { 35, 35 } // haven't figured out how to use this yet
+	//#define RGBLED_SPLIT { 35, 35 } // haven't figured out how to use this yet
 
 	//#define RGBLIGHT_LED_COUNT 30
     #define RGBLIGHT_LIMIT_VAL 120
