@@ -53,6 +53,16 @@ QMK_TO_HUMAN = {
     "SPC": "Space",
     "ENT": "Enter",
     "AMPR": "&",
+    "MS_UP": "Mouse cursor up",
+    "MS_DOWN": "Mouse cursor down",
+    "MS_LEFT": "Mouse cursor left",
+    "MS_RIGHT": "Mouse cursor right",
+    "MS_BTN1": "Left click", 
+    "MS_BTN2": "Right click", 
+    "UP": "Up key",
+    "DOWN": "Down key",
+    "LEFT": "Left key",
+    "RIGHT": "Right key",
 }
 # Missing: #, $, %, *, ^, <, >, \, |
 

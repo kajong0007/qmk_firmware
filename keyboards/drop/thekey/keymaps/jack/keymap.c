@@ -47,7 +47,7 @@ uint16_t auto_space_started = 0;
 bool auto_space_enable_once = false;
 uint8_t  code_length = 0;
 uint16_t code = 0;
-bool visible = true;
+bool visible = false;
 bool render = true;
 bool shift_lock = false;
 bool fn_key = false;
@@ -151,6 +151,7 @@ void process_##x(void) {\
         auto_space_enable_once = true; \
     } \
     //
+#define JAK_NOTHING_CODE //
 #define JAK_TYPE_KEY(bits, keycode, extra_code) \
         case bits:\
             tap_code16(keycode);\
@@ -282,19 +283,10 @@ JAK_PROCESS_FUNCTION_CLOSE;
 
 
 // so many 6 keycodes unused
-//0b001000
-//0b001001
 //0b001010
-//0b001101
-//0b001110
 //0b001111
-//0b010001
-//0b010011
-//0b010100
-//0b010110
 //0b010111
-//0b011000
-//0b011001
+//0b010110
 //0b011011
 //0b011100
 //0b011101
@@ -304,16 +296,10 @@ JAK_PROCESS_FUNCTION_CLOSE;
 //0b100101
 //0b100110
 //0b100111
-//0b101000
-//0b101001
-//0b101011
-//0b101100
 //0b101101
 //0b101110
 //0b101111
 //0b110010
-//0b110011
-//0b110101
 //0b111001
 //0b111100
 //0b111101
@@ -371,6 +357,20 @@ JAK_DO_OTHER(0b100010, "RGB brightness-", \
 JAK_DO_OTHER(0b100011, "RGB brightness+", \
         rgblight_increase_val(); \
         );
+#endif
+JAK_TYPE_KEY(0b001000, KC_UP, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b001001, KC_DOWN, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b001101, KC_LEFT, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b001110, KC_RIGHT, JAK_NOTHING_CODE);
+#ifdef MOUSEKEY_ENABLE
+JAK_TYPE_KEY(0b010001, KC_MS_BTN1, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b010011, KC_MS_BTN2, JAK_NOTHING_CODE);
+
+JAK_TYPE_KEY(0b101000, KC_MS_UP, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b101100, KC_MS_DOWN, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b011000, KC_MS_LEFT, JAK_NOTHING_CODE);
+JAK_TYPE_KEY(0b011001, KC_MS_RIGHT, JAK_NOTHING_CODE);
+
 #endif
 JAK_PROCESS_FUNCTION_CLOSE;
 
